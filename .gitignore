@@ -1,0 +1,4 @@
+*.xcodeproj
+*.lproj
+Source/
+build/
