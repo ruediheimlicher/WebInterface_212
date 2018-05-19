@@ -66,6 +66,23 @@ void IOWarriorCallback ()
 {
     [gWindowController populateInterfacePopup];
 }
+   
+   - (BOOL)checklocal:(NSString*)ip
+   {
+      //NSString* localipString = [NSString localizedStringWithFormat:@"do shell script \"arp -a |grep '192.168.1.212'\""];
+      NSString* localipString = [NSString localizedStringWithFormat:@"do shell script \"arp -a \""];
+      NSAppleScript *localipscript = [[NSAppleScript alloc] initWithSource:localipString];
+      NSDictionary *localiperrorMessage = nil;
+      NSAppleEventDescriptor *localipresult = [localipscript executeAndReturnError:&localiperrorMessage];
+      //NSLog(@"local mount: %@",localipresult);
+      NSLog(@"local mount: %@",[localipresult stringValue]);
+      if ([[localipresult stringValue] rangeOfString:ip].location != NSNotFound) 
+      {
+         NSLog(@"IP %@ ist da",ip);
+         return YES;
+      }
+      return NO;
+   }
 
 - (void)Alert:(NSString*)derFehler
 {
@@ -85,14 +102,14 @@ void IOWarriorCallback ()
    uint8_t    comp = ~indata;
    uint8_t comp2 = indata ^0xFF;
    uint8_t sum = indata + comp2;
-//   printf("indata: %d comp: %d comp2: %d sum: %d\n",indata,comp, comp2, sum);
-
+   //   printf("indata: %d comp: %d comp2: %d sum: %d\n",indata,comp, comp2, sum);
+   
    /*   
     tempADtype = (AD_type & 0x01) << 1 ;
     tempLow = (ADchanel & 0x03) << 6;
     tempHigh = (ADchanel & 0x04) >> 2;
     tempHigh |= (0x04)|(tempADtype);     // 0x04 --> startBit
-
+    
     */
    unsigned char  tempHigh,tempLow,tempADtype,dummyData,mcresult;
    
@@ -102,13 +119,13 @@ void IOWarriorCallback ()
    tempLow = (ADchanel & 0x03) << 6;
    tempHigh = (ADchanel & 0x04) >> 2;
    mcresult = tempHigh;
- 
+   
    mcresult |= (0x04)|(tempADtype);     // 0x04 --> startBit
-
-//   printf("AD_type: %d ADchanel: %d tempADtype: %d tempLow: %02X tempHigh: %02X result: %02X\n",AD_type,ADchanel, tempADtype, tempLow,tempHigh,mcresult);
-  tempHigh |= (0x04)|(tempADtype);  
+   
+   //   printf("AD_type: %d ADchanel: %d tempADtype: %d tempLow: %02X tempHigh: %02X result: %02X\n",AD_type,ADchanel, tempADtype, tempLow,tempHigh,mcresult);
+   tempHigh |= (0x04)|(tempADtype);  
    uint8_t u = 8<<4;
-   printf("tempHigh nach: %02X u: %02X\n",tempHigh,u);
+   //printf("tempHigh nach: %02X u: %02X\n",tempHigh,u);
    /*
     dummyData = MCP3208_spiWrite(tempHigh);        // Write control HighByte return not care
     _delay_us(ADC_DELAY);
@@ -124,11 +141,11 @@ void IOWarriorCallback ()
    uint16_t impulsmittelwert = 920;
    uint8_t lb = impulsmittelwert & 0xFF;
    uint8_t hb = (impulsmittelwert>>8) & 0xFF;
-  uint8_t hb2 = ((impulsmittelwert & 0xFF00)>>8) & 0xFF;
+   uint8_t hb2 = ((impulsmittelwert & 0xFF00)>>8) & 0xFF;
    
    uint16_t result = lb + 0xff*hb;
    uint16_t resul2t = lb | (hb <<8);
-
+   
    //Reachability* reachability = [[Reachability reachabilityWithHostName: @"www.apple.com"];
    //NetworkStatus netStatus = [reachability currentReachabilityStatus];
    
@@ -143,10 +160,15 @@ void IOWarriorCallback ()
     NSString *scriptReturn = [ipresult stringValue];
     NSLog(@"HomeData Found ping string: %@",scriptReturn);
     */
-   localNetz = NO;
    
-   localHostIP = [NSURL URLWithString:@"http://192.168.1.212:5000"];
+   localNetz = NO;
+   NSString* localIP = @"192.168.1.212";
+   
+   
+   NSString* localHostIPString = [NSString stringWithFormat:@"http://%@:5000",localIP];
+   localHostIP = [NSURL URLWithString:localHostIPString];
    webHostIP = [NSURL URLWithString:@"https://ruediheimlicherhome.dyndns.org"];
+   
    
    NSString* ASString = @"return do shell script \"curl http://checkip.dyndns.org/\"";
    NSAppleScript* IP_appleScript = [[NSAppleScript alloc] initWithSource: ASString];
@@ -154,7 +176,7 @@ void IOWarriorCallback ()
    NSDictionary *iperrorMessage = nil;
    NSAppleEventDescriptor *ipresult = [IP_appleScript executeAndReturnError:&iperrorMessage];
    NSString *scriptReturn = [ipresult stringValue];
-   NSLog(@"checkIP: %@",scriptReturn);
+   NSLog(@"check IP: %@",scriptReturn);
    NSDictionary* IPErr=nil;
    NSNotificationCenter * nc;
    nc=[NSNotificationCenter defaultCenter];
@@ -172,7 +194,7 @@ void IOWarriorCallback ()
    
    //oldHour=[[NSCalendarDate date]hourOfDay];
    
-    
+   
    
    daySaved=NO;
    int adresse=0xABCD;
@@ -235,7 +257,7 @@ void IOWarriorCallback ()
    string[2]='\0';                       // String Terminator
    l=(zahl % 16);
    if (l<10)
-      string[1]=l +'0';  
+   string[1]=l +'0';  
    else
    {
       l%=10;
@@ -245,7 +267,7 @@ void IOWarriorCallback ()
    zahl /=16;
    h= zahl % 16;
    if (h<10)
-      string[0]=h +'0';  
+   string[0]=h +'0';  
    else
    {
       h%=10;
@@ -422,51 +444,88 @@ void IOWarriorCallback ()
    
    //AVR=[[rAVR alloc]init];
    
-   localNetz = NO; 
+   localNetz = [self checklocal:localIP];
+   NSLog(@"islocal: %d",localNetz);
+   
    HomeClient = [[rHomeClient alloc]init];
-   NSAlert *Warnung = [[NSAlert alloc] init];
-   [Warnung addButtonWithTitle:@"Web"];
-   [Warnung addButtonWithTitle:@"Lokal"];
-   //   [Warnung addButtonWithTitle:@""];
-   //   [Warnung addButtonWithTitle:@"Abbrechen"];
-   NSString* MessageText= NSLocalizedString(@"Netz-Zugang",@"Verbindung misslungen");
-   [Warnung setMessageText:[NSString stringWithFormat:@"%@ \n%@",@"IOWarriorWindowController awake",MessageText]];
    
-   
-   NSString* s1=@"Auswahl";
-   NSString* InformationString=[NSString stringWithFormat:@"Comment: %@",s1];
-   [Warnung setInformativeText:InformationString];
-   [Warnung setAlertStyle:NSWarningAlertStyle];
-   
-   int antwort=[Warnung runModal];
-   //NSLog(@"Connection: %d",antwort);
    NSMutableDictionary* localStatusDic=[[NSMutableDictionary alloc]initWithCapacity:0];
    
-   switch (antwort)
+   if (localNetz) // lokales Netz ist da
    {
-      case 1000: // Web benutzen
+      NSAlert *Warnung = [[NSAlert alloc] init];
+      
+      [Warnung addButtonWithTitle:@"Lokal"];
+      [Warnung addButtonWithTitle:@"Web"];
+      //   [Warnung addButtonWithTitle:@""];
+      [Warnung addButtonWithTitle:@"Abbrechen"];
+      NSString* MessageText= NSLocalizedString(@"Netz-Zugang",@"Verbindung misslungen");
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@ \n%@",MessageText,@"Lokales Netz oder Web?"]];
+      
+      
+      NSString* s1=@"Auswahl";
+      NSString* InformationString=[NSString stringWithFormat:@"%@",s1];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      NSLog(@"Connection: %d",antwort);
+      
+      switch (antwort)
       {
-         [localStatusDic setObject:[NSNumber numberWithInt:0]forKey:@"status"];
-         //[localStatusDic setObject:webHostIP forKey:@"localhostip"];
-         [localStatusDic setObject:localHostIP forKey:@"localhostip"];
+         case 1001: // Web benutzen
+         {
+            localNetz = NO; // lokales Netz nicht verwenden
+            NSLog(@"lokales Netz nicht verwenden");
+            actualHostIP = webHostIP;
+            [localStatusDic setObject:[NSNumber numberWithInt:0]forKey:@"status"];
+            [localStatusDic setObject:webHostIP forKey:@"localhostip"];
+            [localStatusDic setObject:localHostIP forKey:@"localhostip"];
+            [localStatusDic setObject:webHostIP forKey:@"aktuellehostip"];
+            
+            
+            [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
+            
+            
+         }break;
+         case 1000:
+         {
+            //localNetz = YES; // lokales Netzwerk benutzen
+            NSLog(@"lokales Netz verwenden");
+            actualHostIP = localHostIP;
+            [localStatusDic setObject:[NSNumber numberWithInt:1]forKey:@"status"];
+            [localStatusDic setObject:localHostIP forKey:@"localhostip"];
+            [localStatusDic setObject:localHostIP forKey:@"aktuellehostip"];
+            [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
+            
+         }break;
          
-         
-         [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
-         
-         
-      }break;
-      case 1001:
-      {
-         localNetz = YES; // lokales Netzwerk benutzen
-         
-         [localStatusDic setObject:[NSNumber numberWithInt:1]forKey:@"status"];
-         [localStatusDic setObject:localHostIP forKey:@"localhostip"];
-         [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
+         case 1002:
+         {
+            
+            [NSApp terminate:self];
+            
+         }break;
          
       }
    }
    
+    else
+   {
+      NSLog(@"kein lokales Netz vorhanden");
+      actualHostIP = webHostIP;
+      [localStatusDic setObject:[NSNumber numberWithInt:0]forKey:@"status"];
+      [localStatusDic setObject:webHostIP forKey:@"localhostip"];
+      [localStatusDic setObject:localHostIP forKey:@"localhostip"];
+      [localStatusDic setObject:webHostIP forKey:@"aktuellehostip"];
+      
+      
+      [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
+      
+   }
+    
    
+//HomeCentralURL = actualHostIP;
    
    lastDataRead=[[NSData alloc]init];
    
@@ -474,20 +533,17 @@ void IOWarriorCallback ()
    
    if (localNetz == NO)
    {
-      [self showHomeData:NULL];
-      
-      [self showData:NULL]; // Observer von Data muessen vor HomeData aktiviert sein
-      
-      
-   }
-   else
-   {
       [AVR setLocalStatus];
    }
+   [self showHomeData:NULL];
+      
+   [self showData:NULL]; // Observer von Data muessen vor HomeData aktiviert sein
+      
+   NSLog(@"awake aktualHostIP: %@",actualHostIP);
    
    [AVR setLocalHostIP:localHostIP];
    [AVR setWebHostIP:webHostIP];
-   
+   [AVR setAktuelleHostIP:actualHostIP];
    lastDataZeit=0;
    //[self startHomeData];
    //NSLog(@"awake vor AktuelleDaten");
@@ -500,7 +556,7 @@ void IOWarriorCallback ()
    
    if (AktuelleDaten &&[AktuelleDaten length])
    {
-      //NSLog(@"awake openWithString\n\n");
+      NSLog(@"awake openWithString\n\n");
       
       [self openWithString:AktuelleDaten];
       
@@ -520,8 +576,9 @@ void IOWarriorCallback ()
       [localStatusDic setObject:[NSNumber numberWithInt:1]forKey:@"status"];
       [localStatusDic setObject:localHostIP forKey:@"localhostip"];
       [localStatusDic setObject:webHostIP forKey:@"webhostip"];
+      [localStatusDic setObject:actualHostIP forKey:@"actualhostip"];
       [nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
-
+      
       //[Data setRouter_IP:@"192.168.1.210"];
    }
    NSLog(@"end DatenVonHeute");

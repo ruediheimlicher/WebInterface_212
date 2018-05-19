@@ -489,6 +489,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
    [NotificationDic setObject:[NSNumber numberWithInt:[sender state]] forKey:@"takt"];
     [NotificationDic setObject: webHostIP forKey:@"webhostip"];
     [NotificationDic setObject: localHostIP forKey:@"localhostip"];
+   [NotificationDic setObject: actualHostIP forKey:@"actualhostip"];
    [NotificationDic setObject:[NSNumber numberWithInt:TAKTDELAY] forKey:@"taktdelay"];
    if ([sender state] == 0)// reset Takt
    {
@@ -1059,6 +1060,13 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 {
    localHostIP = ip;
 }
+   
+- (void)setAktuelleHostIP:(NSString*)ip
+   {
+      actualHostIP = ip;
+   }
+   
+   
 
 - (void)setLocalStatus
 {

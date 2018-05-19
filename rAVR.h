@@ -131,6 +131,7 @@ uint8_t                 daySettingArray[8][16]; // 1 Zeile pro Tag, 4 bytes code
 NSString*               HomeDaySettingPfad;   
 NSString*               localHostIP; 
 NSString*               webHostIP; 
+NSString*               actualHostIP; 
    
 /*
  byte 0: raum | objekt
@@ -233,6 +234,7 @@ NSTimer*                EEPROMUpdateTimer;
 
 - (void)setWebHostIP:(NSString*)ip;
 - (void)setLocalHostIP:(NSString*)ip;
+- (void)setAktuelleHostIP:(NSString*)ip;
 - (IBAction)reportTakt:(id)sender;
 
 - (BOOL)windowShouldClose:(id)sender;

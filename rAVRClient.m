@@ -16,8 +16,8 @@
 
 - (IBAction)reportTWIState:(id)sender
 {
-	// YES: TWI wird EINgeschaltet
-	// NO:	TWI wird AUSgeschaltet
+	// YES: TWI wird EIN geschaltet
+	// NO:	TWI wird AUS geschaltet
 	//NSLog(@"AVRClient reportTWIState: state: %u",(unsigned int)[sender state]);
 	//[readTagTaste setEnabled:YES];
    
@@ -27,6 +27,7 @@
       Webserver_busy=0;
      
        NSLog(@"TWI wird ON: TWI_ON_Flag: %d state: %ld",TWI_ON_Flag,(long)[sender state]);
+      [Waitrad stopAnimation:NULL];
 	}
    else
    {
@@ -53,7 +54,7 @@
   
    [twiStatusDic setObject: localHostIP forKey:@"localhostip"];
    [twiStatusDic setObject: webHostIP forKey:@"webhostip"];
-   
+   [twiStatusDic setObject: actualHostIP forKey:@"actualhostip"];
 	//NSLog(@"AVRClient end");
 	[nc postNotificationName:@"twistatus" object:self userInfo:twiStatusDic];
 //   [LocalTaste setState:![sender state]];
@@ -107,6 +108,7 @@
 
    [localStatusDic setObject:localHostIP forKey:@"localhostip"];
    [localStatusDic setObject:webHostIP forKey:@"webhostip"];
+   [localStatusDic setObject:actualHostIP forKey:@"actualhostip"];
 	[nc postNotificationName:@"localstatus" object:self userInfo:localStatusDic];
    if ([LocalTaste isEnabled])
    {
@@ -2817,6 +2819,16 @@ if (Webserver_busy)
    {
       [Errorfeld setStringValue:[[note userInfo]objectForKey:@"provurl"]];
    }
+   
+   if ([[note userInfo]objectForKey:@"anzahl"])
+   {
+      int anz = [[[note userInfo]objectForKey:@"anzahl"]intValue];
+      if (anz == 77) // timeout
+      {
+         [Waitrad stopAnimation:NULL];
+      }
+   }
+
 
 }
 

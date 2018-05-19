@@ -45,6 +45,7 @@
    
    NSURL*                  localHostIP;
    NSURL*                  webHostIP;
+    NSURL*                 actualHostIP;
 	int							anzDataOK;
 	int							anzSessionFiles;
 	int							oldHour;

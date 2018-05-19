@@ -246,8 +246,14 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 
          return returnString;
       }
+      
+      //NSString * localipString = [NSString localizedStringWithFormat:@"do shell script \"ping -c 2 192.168.1.212\""];
+       
+      
+      
 		DataSuffix=@"HomeDaten.txt";
-		NSString* URLPfad=[[NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:DataSuffix]]path];
+		
+      //NSString* URLPfad=[[NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:DataSuffix]]path];
 		//NSLog(@"DataVonHeute URLPfad: %@",URLPfad);
 		//NSLog(@"DataVonHeute  DownloadPfad: %@ DataSuffix: %@",DownloadPfad,DataSuffix);
 		NSURL *URL = [NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:DataSuffix]];
@@ -258,7 +264,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       if (localNetz == YES)
          {
-            return returnString;
+ //           return returnString;
          }
 		NSString* DataString=[NSString stringWithContentsOfURL:URL usedEncoding: enc error:&WebFehler];
 		//NSLog(@"DataVonHeute WebFehler: :%@",[[WebFehler userInfo]description]);
@@ -491,7 +497,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		NSCharacterSet* CharOK=[NSCharacterSet alphanumericCharacterSet];
 		
 		//NSURLRequestUseProtocolCachePolicy
-		NSDate* ZeitVor=[NSDate date];
+		NSDate* ZeitVor=[NSDate date]; // Beginn markieren
 		NSError* WebFehler;
 		int NSURLRequestReloadIgnoringLocalCacheData = 1;
 		int NSURLRequestReloadIgnoringLocalAndRemoteCacheData=4;
@@ -522,7 +528,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			//ERROR: 503
 		}
 		NSString *lastTimeString = [[NSString alloc] initWithBytes: [lastTimeData bytes] length:[lastTimeData length] encoding: NSUTF8StringEncoding];
-		
+		//NSLog(@"lastTimeString: %@",lastTimeString);
 		NSStringEncoding *  enc=0;//NSUTF8StringEncoding;
 		//NSString* lastTimeString=[NSString stringWithContentsOfURL:lastTimeURL usedEncoding: enc error:NULL];
 		//[lastTimeString retain];
@@ -582,11 +588,19 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			{
 				DataString=[DataString substringFromIndex:1];
 			}
-			
+			//NSLog(@"DataString: %@", DataString);
+         
+         
 			NSMutableArray* tempDataArray = (NSMutableArray*)[DataString componentsSeparatedByString:@"\t"];
 			//NSLog(@"lastData tempDataArray: %@",[tempDataArray description]);
 			
 			NSArray* prevDataArray = [prevDataString componentsSeparatedByString:@"\t"];
+         uint8_t checksum = 0;
+         for (int i=0;i<[prevDataArray count];i++)
+         {
+            checksum += ([[prevDataArray objectAtIndex:i]intValue] & 0xFF);
+         }
+    //     NSLog(@"checksum: %d", checksum);
 			if ([prevDataArray count]>3)
 			{
 				float prevVorlauf=[[prevDataArray objectAtIndex:1]floatValue];
@@ -707,21 +721,22 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 	NSMutableArray* ErtragdatenArray=[[NSMutableArray alloc]initWithCapacity:0];
 	NSLog(@"Router_IP");
 	NSString*IP_DataSuffix=@"ip.txt";
-   NSString* URLString=[@"https://ruediheimlicher.ch/Data" stringByAppendingPathComponent:IP_DataSuffix];
+   NSString* dataURLString=[@"https://ruediheimlicher.ch/Data" stringByAppendingPathComponent:IP_DataSuffix];
 
   // NSURL* URLPfad=[NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:IP_DataSuffix]];
-   NSURL* ipURL=[NSURL URLWithString:URLString];
+   NSURL* ipURL=[NSURL URLWithString:[dataURLString stringByAppendingPathComponent:IP_DataSuffix]];
                         
 	//NSLog(@"Router_IP URLPfad: %@",URLPfad);
-
+   NSLog(@"Router_IP ServerPfad: %@",ServerPfad);
    NSURL *URL = [NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:IP_DataSuffix]];
-	NSLog(@"Router_IP URL Pfad: %@",[URL path]);
+	NSLog(@"Router_IP URL: %@",URL );
+   NSLog(@"Router_IP URL Pfad: %@",[URL path]);
 	NSStringEncoding *  enc=0;
 	NSCharacterSet* CharOK=[NSCharacterSet alphanumericCharacterSet];
    
-      
+   NSURL* dataURL =   [NSURL URLWithString:dataURLString];
    
-	NSString* DataString=[NSString stringWithContentsOfURL:URL usedEncoding: enc error:NULL];
+	NSString* DataString=[NSString stringWithContentsOfURL:dataURL usedEncoding: enc error:NULL];
 	NSLog(@"IP von Server: %@",DataString);
    NSArray* IP_Array = [DataString componentsSeparatedByString:@"\r\n"];
    //NSLog(@"IP von Server IP_Array: %@",IP_Array);
@@ -824,7 +839,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       if (localNetz == YES)
       {
-         return returnString;
+ //        return returnString;
       }
 
       //NSArray* BrennerdatenArray = [self BrennerStatistikVonJahr:2010 Monat:0];
@@ -842,7 +857,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       if (localNetz == YES)
       {
-         return returnString;
+ //        return returnString;
       }
     
       NSStringEncoding *  enc=0;
@@ -1613,7 +1628,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       if (localNetz == YES)
       {
-         return returnString;
+ //        return returnString;
       }
       
       
@@ -1627,7 +1642,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       if (localNetz == YES)
       {
-         return returnString;
+ //        return returnString;
       }
       
       NSStringEncoding *  enc=0;

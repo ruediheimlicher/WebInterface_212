@@ -726,7 +726,12 @@ unsigned char h2int(char c)
          NSLog(@"LocalStatusAktion global: HomeCentralURL: %@",HomeCentralURL);
       }
    }
-   //NSLog(@"HomeClient LocalStatusAktion HomeCentralURL: %@",HomeCentralURL);
+   if ([[note userInfo]objectForKey:@"actualhostip"])
+   {
+ //     HomeCentralURL = [[note userInfo]objectForKey:@"actualhostip"];
+   }
+   
+   NSLog(@"HomeClient LocalStatusAktion HomeCentralURL: %@",HomeCentralURL);
 }
 
 - (void)LoadTestAktion:(NSNotification*)note
@@ -1080,7 +1085,7 @@ unsigned char h2int(char c)
 
 - (void)TWIStatusAktion:(NSNotification*)note
 {
-   NSLog(@"HomeClient TWIStatusAktion note: %@\nHomeCentralURL: %@",[[note userInfo]description],HomeCentralURL);
+   //NSLog(@"HomeClient TWIStatusAktion note: %@\nHomeCentralURL: %@",[[note userInfo]description],HomeCentralURL);
 	if ([[note userInfo]objectForKey:@"local"])
    {
       int localstatus = [[[note userInfo]objectForKey:@"local"]intValue];
@@ -1090,9 +1095,11 @@ unsigned char h2int(char c)
       }
       else // web
       {
+         
           HomeCentralURL = [[note userInfo]objectForKey:@"webhostip"];
       }
    }
+   HomeCentralURL = [[note userInfo]objectForKey:@"actualhostip"];
    
 	if ([[note userInfo]objectForKey:@"status"])
 	{
@@ -1104,10 +1111,10 @@ unsigned char h2int(char c)
          
 			NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@%@",HomeCentralURL, TWIStatusSuffix,pwpart];
 			
-         NSLog(@"TWIStatusAktion Status > 1  TWIStatusURL: %@",TWIStatusURLString);
+  //       NSLog(@"TWIStatusAktion Status > 1  TWIStatusURL: %@",TWIStatusURLString);
 			
          NSURL *URL = [NSURL URLWithString:TWIStatusURLString];
-         NSLog(@"TWIStatusAktion URL: %@",URL);
+   //      NSLog(@"TWIStatusAktion URL: %@",URL);
          downloadflag = 1;
 			[self loadURL:URL];
          
@@ -1128,7 +1135,7 @@ unsigned char h2int(char c)
 			//NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@",HomeCentralURL, TWIStatusSuffix];
          NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@%@",HomeCentralURL, TWIStatusSuffix,pwpart];
 
-         NSLog(@"TWIStatusAktion Status > 0 TWIStatusURL: %@",TWIStatusURLString);
+      //   NSLog(@"TWIStatusAktion Status > 0 TWIStatusURL: %@",TWIStatusURLString);
          
          NSURL *URL = [NSURL URLWithString:TWIStatusURLString];
 			//NSLog(@"TWIStatusAktion URL: %@",URL);
@@ -1155,8 +1162,8 @@ unsigned char h2int(char c)
             [confirmTimerDic setObject:[NSNumber numberWithInt:0]forKey:@"local"];
            
          }
-         int sendResetDelay=1.0;
-			NSLog(@"TWIStatusAktionAktion  confirmTimerDic: %@",[confirmTimerDic description]);
+         int sendResetDelay=1.5;
+			NSLog(@"TWIStatusAktionAktion  confirmTimerDic anz: %d",[[confirmTimerDic objectForKey:@"anzahl"]intValue]);
          downloadflag = 1;
          
 			confirmStatusTimer=[NSTimer scheduledTimerWithTimeInterval:sendResetDelay
@@ -1178,7 +1185,7 @@ unsigned char h2int(char c)
 - (void)statusTimerFunktion:(NSTimer*) derTimer
 {
 	NSMutableDictionary* statusTimerDic=(NSMutableDictionary*) [derTimer userInfo];
-	NSLog(@"statusTimerFunktion  statusTimerDic: %@",[statusTimerDic description]);
+	NSLog(@"statusTimerFunktion  statusTimerDic anzahl: %d",[[statusTimerDic objectForKey:@"anzahl"]intValue]);
    NSURL* TWIStatus0URL;
    /*
    if ([statusTimerDic objectForKey:@"url"])
@@ -1240,6 +1247,7 @@ unsigned char h2int(char c)
 			// Misserfolg an AVRClient senden
 			NSMutableDictionary* tempDataDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 			[tempDataDic setObject:[NSNumber numberWithInt:0] forKey:@"isstatusok"];
+         [tempDataDic setObject:[NSNumber numberWithInt:77] forKey:@"anzahl"];
          if ([statusTimerDic objectForKey:@"local"] && [[statusTimerDic objectForKey:@"local"]intValue]==1 )
          {
             [tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"local"];
@@ -2312,7 +2320,7 @@ unsigned char h2int(char c)
 		CheckRange = [HTML_Inhalt rangeOfString:EEPROM_Adresse_String];
 		if (CheckRange.location < NSNotFound)
 		{
-         //NSLog(@"didFinishLoadForFrame: okcode=radr ist da");
+         NSLog(@"didFinishLoadForFrame: okcode=radr ist da");
 			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"radrok"];
 		}
 		else
@@ -2328,10 +2336,12 @@ unsigned char h2int(char c)
 		if (CheckRange.location < NSNotFound)
 		{
 			//NSLog(@"didFinishLoadForFrame okcode: data ist da  loc: %lu",(unsigned long)CheckRange.location);
-			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"data"];
+         NSLog(@"didFinishLoadForFrame okcode: data ist da"); 
+         [tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"data"];
 		}
 		else
 		{
+       //  NSLog(@"didFinishLoadForFrame okcode: data ist noch nicht da"); 
 			[tempDataDic setObject:[NSNumber numberWithInt:0] forKey:@"data"];
 		}
 		
@@ -2341,13 +2351,14 @@ unsigned char h2int(char c)
 		CheckRange = [HTML_Inhalt rangeOfString:EEPROM1_String];
 		if (CheckRange.location < NSNotFound)
 		{
-			//NSLog(@"didFinishLoadForFrame: eeprom+ ist da loc: %lu ",(unsigned long)CheckRange.location);
+			NSLog(@"didFinishLoadForFrame: eeprom+ ist da loc: %lu ",(unsigned long)CheckRange.location);
 			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"eeprom+"];
          
          //loadTestStatus = END_WRITE;
       }
 		else
 		{
+      //   NSLog(@"didFinishLoadForFrame: eeprom+ ist noch nicht da");
 			[tempDataDic setObject:[NSNumber numberWithInt:0] forKey:@"eeprom+"];
 		}
 		
@@ -2356,7 +2367,7 @@ unsigned char h2int(char c)
 		CheckRange = [HTML_Inhalt rangeOfString:EEPROM0_String];
 		if (CheckRange.location < NSNotFound)
 		{
-			//NSLog(@"didFinishLoadForFrame: eeprom- ist da ");
+			NSLog(@"didFinishLoadForFrame: eeprom- ist da ");
 			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"eeprom-"];
 		}
 		else

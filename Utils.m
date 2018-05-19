@@ -60,25 +60,31 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
    srand((unsigned int)time(NULL));   // should only be called once
    int randomnummer1 = rand()%63+1;
+   
+   randomnummer1=59;
+   
    //NSLog(@"Util passwortstring randomnummer 1: *%d* reminder: %d mantisse: %d",randomnummer1 ,randomnummer1%8,randomnummer1/8);
    int randomzeile1 = randomnummer1%8;
    int randomkolonne1 = randomnummer1/8;
-   //NSLog(@"Util passwortstring randomnummer 1: *%d* randomzeile: %d randomkolonne: %d",randomnummer1 ,randomzeile1,randomkolonne1);
+   NSLog(@"Util passwortstring randomnummer 1: *%d* randomzeile: %d randomkolonne: %d",randomnummer1 ,randomzeile1,randomkolonne1);
 
    NSString* passwort1 = [[[PasswortTabelle objectAtIndex:randomzeile1]componentsSeparatedByString:@"\t"]objectAtIndex:randomkolonne1];
 //   NSLog(@"passwortstring passwort1: %@ randomnummer 1: *%d* randomzeile: %d randomkolonne: %d",passwort1,randomnummer1 ,randomzeile,randomkolonne);
 
    
    int randomnummer2 = rand()%63+1;
+   
+   randomnummer2 = 51;
    //NSLog(@"Util passwortstring randomnummer 2: *%d* reminder: %d mantisse: %d",randomnummer2 ,randomnummer2%8,randomnummer2/8);
    int randomzeile2 = randomnummer2%8;
    int randomkolonne2 = randomnummer2/8;
    NSString* passwort2 = [[[PasswortTabelle objectAtIndex:randomzeile2]componentsSeparatedByString:@"\t"]objectAtIndex:randomkolonne2];
+   NSLog(@"Util passwortstring randomnummer 2: *%d* randomzeile: %d randomkolonne: %d",randomnummer2 ,randomzeile2,randomkolonne2);
 
    
    returnstring = [NSString stringWithFormat:@"%02X\t%02X\t%02X\t%02X",randomnummer1,[passwort1 intValue],randomnummer2,[passwort2 intValue]];
    
-   //NSLog(@"Util passwortstring returnstring: %@",returnstring);
+   NSLog(@"Util passwortstring returnstring: %@",returnstring);
    return returnstring;
 }
 
