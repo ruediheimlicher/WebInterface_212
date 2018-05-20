@@ -953,14 +953,14 @@ if (Webserver_busy)
       
 		uint16_t i2cStartadresse=Raum*RAUMPLANBREITE + Objekt*TAGPLANBREITE+ Wochentag*0x08;
 		
-      //NSLog(@"i2cStartadresse: hex: %04X int: %d",i2cStartadresse,i2cStartadresse);
-      //NSLog(@"Raum: %d Objekt: %d Wochentag: %d",Raum,Objekt,Wochentag);
+      NSLog(@"i2cStartadresse: hex: %04X int: %d",i2cStartadresse,i2cStartadresse);
+      NSLog(@"Raum: %d Objekt: %d Wochentag: %d",Raum,Objekt,Wochentag);
       
       // Kontrolle: Rueckwaertsberechnung im Master
       uint8_t raum = i2cStartadresse / RAUMPLANBREITE;
       uint8_t objekt = (i2cStartadresse % RAUMPLANBREITE)/ TAGPLANBREITE;
       uint8_t wochentag = (i2cStartadresse % RAUMPLANBREITE %TAGPLANBREITE) / 0x08;
-
+      NSLog(@"raum: %d objekt: %d wochentag: %d",raum,objekt,wochentag);
       uint8_t lb = i2cStartadresse & 0x00FF;
 		[HomeClientDic setObject:[NSNumber numberWithInt:lb] forKey:@"lbyte"];
 		uint8_t hb = i2cStartadresse >> 8;
@@ -971,7 +971,7 @@ if (Webserver_busy)
 		[HomeClientDic setObject:[NSNumber numberWithInt:hb] forKey:@"hbyte"];
 		[HomeClientDic setObject:StundenByteArray forKey:@"stundenbytearray"];
       [Cmd setStringValue:[StundenByteArray componentsJoinedByString:@"\t"]];
-		//NSLog(@"WriteStandardAktion Raum: %d wochentag: %d Objekt: %d EEPROM: %02X lb: 0x%02X hb: 0x%02X ",Raum, Wochentag, Objekt,EEPROM_i2cAdresse,lb, hb);
+      NSLog(@"WriteStandardAktion Raum: %d wochentag: %d Objekt: %d EEPROM: %02X lb: 0x%02X hb: 0x%02X startadresse: %d",Raum, Wochentag, Objekt,EEPROM_i2cAdresse,lb, hb,i2cStartadresse);
 		
 		// Information an HomeClient schicken
 		
