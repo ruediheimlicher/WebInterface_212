@@ -74,12 +74,24 @@ void IOWarriorCallback ()
       NSAppleScript *localipscript = [[NSAppleScript alloc] initWithSource:localipString];
       NSDictionary *localiperrorMessage = nil;
       NSAppleEventDescriptor *localipresult = [localipscript executeAndReturnError:&localiperrorMessage];
-      //NSLog(@"local mount: %@",localipresult);
-      NSLog(@"local mount: %@",[localipresult stringValue]);
-      if ([[localipresult stringValue] rangeOfString:ip].location != NSNotFound) 
+      NSLog(@"checklocal ip: %@ local mount: %@",ip,localipresult);
+      NSLog(@"local mount: %@",[[localipresult stringValue] componentsSeparatedByString:@"\r"]);
+      NSArray* localiparray = [[localipresult stringValue] componentsSeparatedByString:@"\r"];
+      for (int zeile=0;zeile < [localiparray count];zeile++)
       {
-         NSLog(@"IP %@ ist da",ip);
-         return YES;
+        // NSLog(@"zeile: %@",localiparray[zeile]);
+         if ([localiparray[zeile] rangeOfString:ip].location != NSNotFound) 
+         {
+            if ([localiparray[zeile] rangeOfString:@"(incomplete)"].location == NSNotFound)
+            {
+               NSLog(@"checklocal IP %@ ist da zeile: %d %@",ip,zeile, localiparray[zeile]);
+               return YES;
+            }
+            else
+            {
+               NSLog(@"checklocal IP %@ ist nicht gueltig: Zeile enthaelt (incomplete)",ip);
+            }
+         }
       }
       return NO;
    }

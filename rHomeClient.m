@@ -1111,19 +1111,19 @@ unsigned char h2int(char c)
          
 			NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@%@",HomeCentralURL, TWIStatusSuffix,pwpart];
 			
-  //       NSLog(@"TWIStatusAktion Status > 1  TWIStatusURL: %@",TWIStatusURLString);
+         NSLog(@"TWIStatusAktion Status > 1 *** TWIStatusURL: %@",TWIStatusURLString);
 			
          NSURL *URL = [NSURL URLWithString:TWIStatusURLString];
    //      NSLog(@"TWIStatusAktion URL: %@",URL);
          downloadflag = 1;
-			[self loadURL:URL];
          
          if (sendTimer && [sendTimer isValid])
          {
             [sendTimer invalidate];
             sendTimer = nil;
          }
-		
+         [self loadURL:URL];
+
       }
 		else        // neuer Status ist 0
 		{
@@ -1135,7 +1135,7 @@ unsigned char h2int(char c)
 			//NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@",HomeCentralURL, TWIStatusSuffix];
          NSString* TWIStatusURLString =[NSString stringWithFormat:@"%@/twi?%@%@",HomeCentralURL, TWIStatusSuffix,pwpart];
 
-      //   NSLog(@"TWIStatusAktion Status > 0 TWIStatusURL: %@",TWIStatusURLString);
+         NSLog(@"TWIStatusAktion Status > 0 *** TWIStatusURL: %@",TWIStatusURLString);
          
          NSURL *URL = [NSURL URLWithString:TWIStatusURLString];
 			//NSLog(@"TWIStatusAktion URL: %@",URL);
@@ -1874,6 +1874,7 @@ unsigned char h2int(char c)
 
 - (int)sendEEPROMDataMitDic:(NSDictionary*)EEPROMDataDic
 {
+   // EEPROM-Daten mit eeprom.pl auf homeserver schicken
    int err=0;
    //NSLog(@"sendEEPROMDataMitDic URL: %s EEPROMDataDic: %@",WEBSERVER_VHOST ,[EEPROMDataDic description] );
    /*
@@ -1911,7 +1912,7 @@ unsigned char h2int(char c)
             if (HCRequest)
             {
                //NSLog(@"loadURL:Request OK");
-               [[webView mainFrame] loadRequest:HCRequest];
+               [[webView mainFrame] loadRequest:HCRequest]; // abschicken
             }
             [SendEEPROMDataDic setObject:@"" forKey:@"eepromdatastring"];
          }
@@ -2289,7 +2290,7 @@ unsigned char h2int(char c)
 		CheckRange = [HTML_Inhalt rangeOfString:Status1_String];
 		if (CheckRange.location < NSNotFound)
 		{
-         //NSLog(@"didFinishLoadForFrame: Status1 ist da");
+         NSLog(@"didFinishLoadForFrame: Status1 ist da");
 			//[tempDataDic setObject:@"status" forKey:@"antwort"];
 			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"twistatus"];
          loadTestStatus = END_STATUS1;
@@ -2395,7 +2396,7 @@ unsigned char h2int(char c)
 		CheckRange = [HTML_Inhalt rangeOfString:EEPROM_Write_OK_String];
 		if (CheckRange.location < NSNotFound)
 		{
-			//NSLog(@"didFinishLoadForFrame: write+ ist da");
+			NSLog(@"didFinishLoadForFrame: write+ ist da");
 			[tempDataDic setObject:[NSNumber numberWithInt:1] forKey:@"writeok"];
 			[confirmTimer invalidate];
 			Webserver_busy=0;

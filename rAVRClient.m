@@ -23,10 +23,10 @@
    
 	if ([sender state])
 	{
-      [[NSSound soundNamed:@"Ping"] play];
+      [[NSSound soundNamed:@"Purr"] play];
       Webserver_busy=0;
      
-       NSLog(@"TWI wird ON: TWI_ON_Flag: %d state: %ld",TWI_ON_Flag,(long)[sender state]);
+       NSLog(@" *************** TWI wird ON: TWI_ON_Flag: %d state: %ld",TWI_ON_Flag,(long)[sender state]);
       [Waitrad stopAnimation:NULL];
 	}
    else
@@ -35,7 +35,7 @@
       [Waitrad  startAnimation:NULL];
        [LocalTaste setState:NO];
       
-      NSLog(@"TWI wird OFF: TWI_ON_Flag: %d state: %ld",TWI_ON_Flag,(long)[sender state]);   }
+      NSLog(@" ********* TWI wird OFF: TWI_ON_Flag: %d state: %ld",TWI_ON_Flag,(long)[sender state]);   }
    
    [LocalTaste setEnabled:[sender state]];
    
@@ -1737,7 +1737,7 @@ if (Webserver_busy)
    
    // **
    //EEPROMFeld.origin.y = positionY;
-   NSArray* Wochentag=[NSArray arrayWithObjects:@"MO",@"DI",@"MI",@"DO",@"FR",@"SA",@"SO",nil];
+   NSArray* WochentagArray=[NSArray arrayWithObjects:@"MO",@"DI",@"MI",@"DO",@"FR",@"SA",@"SO",nil];
    NSRect EEPROMFeld=[EEPROMPlan frame];
    NSRect Kontrollzeilenrect = EEPROMFeld;
    Kontrollzeilenrect.size.height = 20;
@@ -1787,7 +1787,7 @@ if (Webserver_busy)
       {
          NSArray* tempZeilenArray = [[[UpdateArray objectAtIndex:i]objectForKey:@"zeile"]componentsSeparatedByString:@"\t"];
          
-         //NSLog(@"tempZeilenArray: %@",[tempZeilenArray description]);
+         NSLog(@"i: %d tempZeilenArray: %@",i,[tempZeilenArray description]);
          int zeilennummer = [[tempZeilenArray objectAtIndex:0]intValue];
 
          int raumnummer = [[tempZeilenArray objectAtIndex:1]intValue];
@@ -1832,7 +1832,7 @@ if (Webserver_busy)
          [newEEPROMbalken setTitel:[tempObjektnamenArray objectAtIndex:objektnummer]];
          [newEEPROMbalken setObjektString:[NSString stringWithFormat:@"%@_web",[tempObjektnamenArray objectAtIndex:objektnummer]]];
          [newEEPROMbalken setObjekt:[NSNumber numberWithInt:objektnummer]];
-         [newEEPROMbalken setWochentagString:[Wochentag objectAtIndex:wochentag]];
+         [newEEPROMbalken setWochentagString:[WochentagArray objectAtIndex:wochentag]];
          [newEEPROMbalken setWochentag:wochentag];
          [newEEPROMbalken setTagbalkenTyp:tagbalkentyp];
          [newEEPROMbalken setTag:2000+zeilennummer];
@@ -1868,7 +1868,7 @@ if (Webserver_busy)
          [oldEEPROMbalken setTitel:[tempObjektnamenArray objectAtIndex:objektnummer]];
          [oldEEPROMbalken setObjekt:[NSNumber numberWithInt:objektnummer]];
 
-         [oldEEPROMbalken setWochentagString:[Wochentag objectAtIndex:wochentag]];
+         [oldEEPROMbalken setWochentagString:[WochentagArray objectAtIndex:wochentag]];
          [oldEEPROMbalken setWochentag:wochentag];
 
          [oldEEPROMbalken setTagbalkenTyp:tagbalkentyp];
@@ -2315,7 +2315,7 @@ if (Webserver_busy)
             NSLog(@"FinishLoadAktion Kontakt beendet");
 				
             
-           [[NSSound soundNamed:@"Ping"] play];
+     //      [[NSSound soundNamed:@"Sosumi"] play];
             [Waitrad stopAnimation:NULL];
             [UpdateWaitrad stopAnimation:NULL];
             

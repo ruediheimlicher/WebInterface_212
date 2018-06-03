@@ -1607,7 +1607,7 @@ extern NSMutableArray* DatenplanTabelle;
    [ZaehlerFeld setIntValue:anzLoads];
    
    
-   if (anzLoads > 8)
+   if (anzLoads > 15)
    {
       //NSBeep();
       [self reload:NULL];
@@ -2801,7 +2801,7 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 	[SolarZaehlerFeld setIntValue:anzSolarLoads];
 	if (anzSolarLoads > 12)
 	{
-		NSBeep();
+//		NSBeep();
 		[self reload:NULL];
 		
 	}
