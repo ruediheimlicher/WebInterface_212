@@ -48,7 +48,7 @@
 	// Taste zum Schreiben des Plans anlegen
 	NSRect WriteFeld=NSMakeRect(6,5.5,24,12);
 	rTaste* WriteTaste=[[rTaste alloc]initWithFrame:WriteFeld];
-	[WriteTaste setButtonType:NSMomentaryLight];
+	[WriteTaste setButtonType:NSButtonTypeMomentaryPushIn];
 	[WriteTaste setTarget:self];
 	[WriteTaste setBordered:YES];
 	[[WriteTaste cell]setBackgroundColor:[NSColor yellowColor]];
@@ -62,7 +62,7 @@
  	// Taste zum temporaerenSchreiben des Plans anlegen
 	NSRect HeuteFeld=NSMakeRect(36,5.5,18,12);
 	rTaste* HeuteTaste=[[rTaste alloc]initWithFrame:HeuteFeld];
-	[HeuteTaste setButtonType:NSMomentaryLight];
+	[HeuteTaste setButtonType:NSButtonTypeMomentaryPushIn];
 	[HeuteTaste setTarget:self];
 	[HeuteTaste setBordered:YES];
 	[[HeuteTaste cell]setBackgroundColor:[NSColor lightGrayColor]];
@@ -149,7 +149,7 @@
 	AllFeld.size.width=14;
 	rTaste* AllTaste=[[rTaste alloc]initWithFrame:AllFeld];
 	//	[AllTaste setButtonType:NSMomentaryLightButton];
-	[AllTaste setButtonType:NSMomentaryLight];
+	[AllTaste setButtonType:NSButtonTypeMomentaryPushIn];
 	[AllTaste setTarget:self];
 	[AllTaste setBordered:YES];
 	[[AllTaste cell]setBackgroundColor:[NSColor lightGrayColor]];
@@ -656,7 +656,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:objekt] forKey:@"objekt"];//
 	[NotificationDic setObject:[(rDatenbalken*)[sender superview]Titel] forKey:@"titel"];//
    
-   [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"permanent"];//
+   [NotificationDic setObject:[NSNumber numberWithInt:6] forKey:@"permanent"];//
 
    int modKey=0;
 	//int all=-1;

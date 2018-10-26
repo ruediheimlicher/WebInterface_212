@@ -771,6 +771,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 			
 		}
 		//NSLog(@"7 HomebusArray count: %d ",[HomebusArray count]);
+      // rWochenplan:
 		NSArray*  tempGeometrieArray=[RaumView setWochenplanForRaum:raum mitWochenplanArray:[[HomebusArray objectAtIndex:raum]objectForKey:@"wochenplanarray"]];
       
 		[RaumScroller setDocumentView:RaumView];

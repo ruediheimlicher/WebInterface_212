@@ -18,7 +18,7 @@ NSMutableArray* ValueKeyTabelle;
 - (void)setValueKeyArray:(NSArray*) derWochenplan;
 - (void)addValueKeyArray:(NSArray*)derTagplan;
 - (void)addValueKeyZeile:(NSDictionary*)dieZeile;
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView;
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView
     objectValueForTableColumn:(NSTableColumn *)aTableColumn 
 			row:(int)rowIndex;

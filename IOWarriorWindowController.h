@@ -3,7 +3,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include <netdb.h>
-#import "IOWarriorLib.h"
+//#import "IOWarriorLib.h"
 #import "rHexEingabe.h"
 #import "rADWandler.h"
 #import "rAVR.h"
@@ -128,6 +128,9 @@
 - (void)readPList;
 - (IBAction)terminate:(id)sender;
 -(void)DruckDatenSchreibenMitDatum:(NSCalendar*)dasDatum ganzerTag:(int)ganz;
+-(void)DruckDatenSchreibenMitDate:(NSDate*)dasDatum ganzerTag:(int)ganz;
+
+
 /* HomeDAta */
 -(void)openWithString:(NSString*)derDatenString;
 -(void)openWithSolarString:(NSString*)derDatenString;

@@ -65,7 +65,7 @@
 
 
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView
 {
     return [WochenplanTabelle count];
 }

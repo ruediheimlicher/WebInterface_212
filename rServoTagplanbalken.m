@@ -47,7 +47,7 @@
 	// Taste zum Schreiben des Plans anlegen
 	NSRect WriteFeld=NSMakeRect(6,5.5,24,12);
 	rTaste* WriteTaste=[[rTaste alloc]initWithFrame:WriteFeld];
-	[WriteTaste setButtonType:NSMomentaryLight];
+	[WriteTaste setButtonType:NSButtonTypeMomentaryPushIn];
 	[WriteTaste setTarget:self];
 	[WriteTaste setBordered:YES];
 	[[WriteTaste cell]setBackgroundColor:[NSColor yellowColor]];
@@ -61,7 +61,7 @@
  	// Taste zum temporaerenSchreiben des Plans anlegen
 	NSRect HeuteFeld=NSMakeRect(36,5.5,18,12);
 	rTaste* HeuteTaste=[[rTaste alloc]initWithFrame:HeuteFeld];
-	[HeuteTaste setButtonType:NSMomentaryLight];
+	[HeuteTaste setButtonType:NSButtonTypeMomentaryPushIn];
 	[HeuteTaste setTarget:self];
 	[HeuteTaste setBordered:YES];
 	[[HeuteTaste cell]setBackgroundColor:[NSColor lightGrayColor]];
@@ -136,7 +136,7 @@
    AllFeldO.origin.y+=10;
 	rTaste* AllTasteO=[[rTaste alloc]initWithFrame:AllFeldO];
 	//	[AllTaste setButtonType:NSMomentaryLightButton];
-	[AllTasteO setButtonType:NSMomentaryLight];
+	[AllTasteO setButtonType:NSButtonTypeMomentaryPushIn];
 	[AllTasteO setTarget:self];
 	[AllTasteO setBordered:YES];
    [AllTasteO setTag:1];
@@ -154,7 +154,7 @@
    
 	rTaste* AllTasteU=[[rTaste alloc]initWithFrame:AllFeldU];
 	//	[AllTaste setButtonType:NSMomentaryLightButton];
-	[AllTasteU setButtonType:NSMomentaryLight];
+	[AllTasteU setButtonType:NSButtonTypeMomentaryPushIn];
 	[AllTasteU setTarget:self];
 	[AllTasteU setBordered:YES];
    [AllTasteU setTag:0];
@@ -676,7 +676,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:Wochentag] forKey:@"wochentag"];
 	[NotificationDic setObject:[NSNumber numberWithInt:Objekt] forKey:@"objekt"];//
 	[NotificationDic setObject:[(rServoTagplanbalken*)[sender superview]Titel] forKey:@"titel"];//
-   [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"permanent"];//
+   [NotificationDic setObject:[NSNumber numberWithInt:7] forKey:@"permanent"];//
 
    int modKey=0;
 	//int all=-1;

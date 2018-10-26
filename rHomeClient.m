@@ -1524,7 +1524,7 @@ unsigned char h2int(char c)
    
    NSString* HomeClientURLString =[NSString stringWithFormat:@"%@/twi?%@%@",HomeCentralURL, WriteDataSuffix,pwpart];
    
-   //NSLog(@"HomeClientWriteStandardAktion HomeClientURLString: %@",HomeClientURLString);
+   NSLog(@"HomeClientWriteStandardAktion HomeClientURLString: %@",HomeClientURLString);
    
   
    NSData *EEPROM_Data = [WriteDataSuffix dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -2563,7 +2563,7 @@ unsigned char h2int(char c)
          {
             // Hex in dez umwandeln fuer senden an HomeServer
             NSArray* tempDataArray = [EEPROM_DataString componentsSeparatedByString:@"+"];
-            NSLog(@"tempDataArray: %@",[tempDataArray description]);
+            NSLog(@"didFinishLoadForFrame tempDataArray: %@",[tempDataArray description]);
             NSMutableArray* tempDezDataArray = [[NSMutableArray alloc]initWithCapacity:0];
             for (int i=0;i<[tempDataArray count];i++)
             {

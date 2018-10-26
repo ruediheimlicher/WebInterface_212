@@ -21,7 +21,7 @@ NSMutableArray* DumpTabelle;
 
 
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView;
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView
     objectValueForTableColumn:(NSTableColumn *)aTableColumn 
 			row:(int)rowIndex;

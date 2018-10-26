@@ -639,6 +639,9 @@
       [writeWocheTaste setEnabled:NO];
 
       [AdresseFeld setStringValue:@""];
+   
+   
+   
       //int	tempTag=[TagPop indexOfSelectedItem];
       // Start ist MO
       int	tempTag=wochentag;
@@ -669,7 +672,7 @@
       //NSLog(@"tempTag: %d tempTag*0x08: %X",tempTag,tempTag*0x08);
       uint16_t startadresse=raum*RAUMPLANBREITE + objekt*TAGPLANBREITE + tempTag*0x08;
       
-      //NSLog(@"tempRaum: %X tempObjekt: %X tempTag: %X startadresse hex: %X dez: %d",tempRaum, tempObjekt, tempTag,startadresse,startadresse);
+      NSLog(@"readEthTagplanVonRaum raum: %X objekt: %X wochentag: %X startadresse hex: %X dez: %d",raum, objekt, wochentag,startadresse,startadresse);
    
       NSString* AdresseKontrollString = [NSString string];
       int hbyte=startadresse/0x100;
@@ -699,18 +702,26 @@
       }
       
       uint16_t kontrollstartadresse = 0x100*hbyte+lbyte;
-      //NSLog(@"kontrollstartadresse: %d",kontrollstartadresse);
+      NSLog(@"kontrollstartadresse: %d",kontrollstartadresse);
       
       uint16_t kontrolltag = (kontrollstartadresse & 0x38)/0x08; // 0x38: 111 000 Bit 3-6
-      //NSLog(@"kontrolltag: %d",kontrolltag);
+      NSLog(@"kontrolltag: %d",kontrolltag);
       
       uint16_t kontrollobjekt = (kontrollstartadresse & 0x1C0)/0x40 ; // 0x1C0: 111 000 000 Bit 7-9
-      //NSLog(@"kontrollobjekt: %d",kontrollobjekt);
+      NSLog(@"kontrollobjekt: %d",kontrollobjekt);
       
       uint16_t kontrollraum = (kontrollstartadresse & 0xE00)/0x200; // 0xE0: 111 000 000 000 Bit 10-12
-      //NSLog(@"kontrollraum: %d",kontrollraum);
+      NSLog(@"kontrollraum: %d",kontrollraum);
       
-      
+   // Kontrolle: Rueckwaertsberechnung im Master
+   uint8_t controlraum = startadresse / RAUMPLANBREITE;
+   uint8_t controlobjekt = (startadresse % RAUMPLANBREITE)/ TAGPLANBREITE;
+   uint8_t controlwochentag = (startadresse % RAUMPLANBREITE %TAGPLANBREITE) / 0x08;
+   NSLog(@"readEthTagplanVonRaum Adresscontrol raum: %d objekt: %d wochentag: %d",controlraum,controlobjekt,controlwochentag);
+   uint8_t controllb = startadresse & 0x00FF;
+   uint8_t controlhb = startadresse >> 8;
+   
+
       /*
        NSString* lbString= [[NSNumber numberWithInt:lbyte]stringValue];
        if ([lbString length]==1) // nur eine Stelle, fuehrende Null einfuegen
@@ -894,7 +905,7 @@ if (Webserver_busy)
 		//	[Warnung addButtonWithTitle:@""];
 		//	[Warnung addButtonWithTitle:@""];
 		//	[Warnung addButtonWithTitle:@"Abbrechen"];
-		[Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktiv!"]];
+		[Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktivA!"]];
 		
 		NSString* s1=@"Der Homebus muss deaktiviert sein, um auf das EEPROM zu schreiben.";
 		NSString* s2=@"Quelle: WriteStandardAktion";
@@ -922,7 +933,6 @@ if (Webserver_busy)
 		int Objekt=[[[note userInfo]objectForKey:@"objekt"]intValue];
       
       //int permanent = [[[note userInfo]objectForKey:@"permanent"]intValue];
-      
       //NSString* Titel = [[note userInfo]objectForKey:@"titel"];
 		NSArray* StundenByteArray=[[note userInfo]objectForKey:@"stundenbytearray"];
 		
@@ -941,7 +951,7 @@ if (Webserver_busy)
 		NSScanner* theScanner = [NSScanner scannerWithString:EEPROM_i2cAdresseString];
 		int ScannerErfolg=[theScanner scanHexInt:&EEPROM_i2cAdresse];
 		[HomeClientDic setObject:[NSNumber numberWithInt:EEPROM_i2cAdresse] forKey:@"eepromadresse"];
-		
+      NSLog(@"EEPROM_i2cAdresse: %d HomeClientDic mit EEPROM_i2cAdresse: %@",EEPROM_i2cAdresse,HomeClientDic);
             // permanent anfuegen
             
       NSString* permanent = [[[note userInfo]objectForKey:@"permanent"]stringValue];
@@ -960,7 +970,7 @@ if (Webserver_busy)
       uint8_t raum = i2cStartadresse / RAUMPLANBREITE;
       uint8_t objekt = (i2cStartadresse % RAUMPLANBREITE)/ TAGPLANBREITE;
       uint8_t wochentag = (i2cStartadresse % RAUMPLANBREITE %TAGPLANBREITE) / 0x08;
-      NSLog(@"raum: %d objekt: %d wochentag: %d",raum,objekt,wochentag);
+      NSLog(@"WriteStandardAktion Adresscontrol raum: %d objekt: %d wochentag: %d",raum,objekt,wochentag);
       uint8_t lb = i2cStartadresse & 0x00FF;
 		[HomeClientDic setObject:[NSNumber numberWithInt:lb] forKey:@"lbyte"];
 		uint8_t hb = i2cStartadresse >> 8;
@@ -970,8 +980,21 @@ if (Webserver_busy)
 		
 		[HomeClientDic setObject:[NSNumber numberWithInt:hb] forKey:@"hbyte"];
 		[HomeClientDic setObject:StundenByteArray forKey:@"stundenbytearray"];
-      [Cmd setStringValue:[StundenByteArray componentsJoinedByString:@"\t"]];
-      NSLog(@"WriteStandardAktion Raum: %d wochentag: %d Objekt: %d EEPROM: %02X lb: 0x%02X hb: 0x%02X startadresse: %d",Raum, Wochentag, Objekt,EEPROM_i2cAdresse,lb, hb,i2cStartadresse);
+      //NSLog(@"WriteStandardAktion StundenByteArray: %@",StundenByteArray);
+      NSString* CmdControlString = [NSString string];
+      
+      for (int i=0;i< [StundenByteArray count];i++)
+      {
+         
+         //NSLog(@"CmdControlString i: %d %@ %02X",i,StundenByteArray[i],[StundenByteArray[i] intValue ]);
+         CmdControlString = [CmdControlString stringByAppendingFormat:@"%02X\t",[StundenByteArray[i] intValue ]];
+      }
+      NSLog(@"WriteStandardAktion CmdControlString: %@",CmdControlString);
+      
+      //[Cmd setStringValue:[StundenByteArray componentsJoinedByString:@"\t"]];
+      [Cmd setStringValue:CmdControlString];
+      
+      NSLog(@"WriteStandardAktion Raum: %d wochentag: %d Objekt: %d EEPROM_i2cAdresse: %02X lb: 0x%02X hb: 0x%02X startadresse: %d",Raum, Wochentag, Objekt,EEPROM_i2cAdresse,lb, hb,i2cStartadresse);
 		
 		// Information an HomeClient schicken
 		
@@ -1155,7 +1178,7 @@ if (Webserver_busy)
     //	[Warnung addButtonWithTitle:@""];
     //	[Warnung addButtonWithTitle:@""];
     //	[Warnung addButtonWithTitle:@"Abbrechen"];
-    [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktiv!"]];
+    [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktivB!"]];
     
     NSString* s1=@"Der Homebus muss deaktiviert sein, um auf das EEPROM zu schreiben.";
     NSString* s2=@"Quelle: writeEEPROMWochenplan";
@@ -1460,7 +1483,7 @@ if (Webserver_busy)
 		//	[Warnung addButtonWithTitle:@""];
 		//	[Warnung addButtonWithTitle:@""];
 		//	[Warnung addButtonWithTitle:@"Abbrechen"];
-		[Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktiv!"]];
+		[Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktivC!"]];
 		
 		NSString* s1=@"Der Homebus muss deaktiviert sein, um auf das EEPROM zu schreiben.";
 		NSString* s2=@"Quelle: WriteModifierAktion";
@@ -1782,7 +1805,8 @@ if (Webserver_busy)
       
       offsetY += 2* offsetKontrollzeile;
       
-
+      NSLog(@"HomeDataUpdateAktion UpdateArray, count: %d",[UpdateArray count]);
+      // Tagplanbalken darstellen
       for (int i=0;i< [UpdateArray count]; i++)
       {
          NSArray* tempZeilenArray = [[[UpdateArray objectAtIndex:i]objectForKey:@"zeile"]componentsSeparatedByString:@"\t"];
@@ -1857,6 +1881,7 @@ if (Webserver_busy)
          EEPROMFeld.origin.y -= distanzBalken + offsetKontrollzeile;
          Kontrollzeilenrect.origin.y = EEPROMFeld.origin.y - 22;
          
+         // bisherige Daten im EEPROM suchen
          NSDictionary* oldStundenplanDic = [self StundenplanDicVonRaum:raumnummer vonObjekt:objektnummer vonWochentag:wochentag];
          
          rEEPROMbalken* oldEEPROMbalken=[[rEEPROMbalken alloc]initWithFrame:EEPROMFeld];
@@ -1950,7 +1975,7 @@ if (Webserver_busy)
    [writeEEPROMcounterfeld setStringValue:@""];
    
    
-   NSArray* viewListe = [EEPROMPlan subviews];
+   NSArray* viewListe = [EEPROMPlan subviews]; // EEPROMPlan: View im Scrollfeld, enthaelt TagplanBalken als subviews
    int newbalkenoffset=1000;
    int oldbalkenoffset=3000;
    NSMutableArray* PListFixArray = [[NSMutableArray alloc]initWithCapacity:0];
@@ -1966,14 +1991,14 @@ if (Webserver_busy)
             rTagplanbalken* tempbalken =[viewListe objectAtIndex:i];
             NSInteger tempTag = tempbalken.tag;
             
-            if (tempTag < 2000)
-               if ([EEPROMPlan  viewWithTag:tempTag]) // Radiobutton
+            if (tempTag < 2000) 
+               if ([EEPROMPlan  viewWithTag:tempTag]) // Radiobutton ist vorhanden
                {
                   int wahl = [[EEPROMPlan  viewWithTag:tempTag]selectedRow];
                   //NSLog(@"i: %d radiotag: %d wahl: %d",i,tempTag,wahl);
                   switch (wahl)
                   {
-                     case 0:
+                     case 0: // PList aktiualisieren
                      {
                         if ([EEPROMPlan  viewWithTag:tempTag+newbalkenoffset])
                         {
@@ -1999,7 +2024,7 @@ if (Webserver_busy)
                            
                         }
                      }break;
-                     case 1: // Anzeige  in EEPROm uebernehmen
+                     case 1: // Anzeige  in EEPROM des Masters uebernehmen
                      {
                         if ([EEPROMPlan  viewWithTag:tempTag+oldbalkenoffset])
                         {
@@ -2120,7 +2145,7 @@ if (Webserver_busy)
           //	[Warnung addButtonWithTitle:@""];
           //	[Warnung addButtonWithTitle:@""];
           //	[Warnung addButtonWithTitle:@"Abbrechen"];
-          [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktiv!"]];
+          [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Homebus aktivD"]];
           
           NSString* s1=@"Der Homebus muss deaktiviert sein, um auf das EEPROM zu schreiben.";
           NSString* s2=@"Quelle: Fixtaste";
@@ -2558,7 +2583,9 @@ if (Webserver_busy)
                      
                   }
                }
-               //NSLog(@"FinishLoadAktion WebTask: %d wochentagindex: %d  DataString: %@",WebTask, wochentagindex, DataString);
+               
+               
+               NSLog(@"FinishLoadAktion WebTask: %d wochentagindex: %d  DataString: %@",WebTask, wochentagindex, DataString);
                [Cmd setStringValue:DataString];
                [EEPROMbalken setStundenArrayAusByteArray:EEPROMDataArray];
                [EEPROMbalken setWochentagString:[TagPop titleOfSelectedItem]];

@@ -69,7 +69,7 @@ void IOWarriorCallback ()
    
    - (BOOL)checklocal:(NSString*)ip
    {
-      //NSString* localipString = [NSString localizedStringWithFormat:@"do shell script \"arp -a |grep '192.168.1.212'\""];
+     // NSString* localipString = [NSString localizedStringWithFormat:@"do shell script \"arp -a |grep '192.168.1.212'\""];
       NSString* localipString = [NSString localizedStringWithFormat:@"do shell script \"arp -a \""];
       NSAppleScript *localipscript = [[NSAppleScript alloc] initWithSource:localipString];
       NSDictionary *localiperrorMessage = nil;
@@ -124,7 +124,8 @@ void IOWarriorCallback ()
     
     */
    unsigned char  tempHigh,tempLow,tempADtype,dummyData,mcresult;
-   
+   NSDate *currentDate = [NSDate date];
+   [self DruckDatenSchreibenMitDate:(NSDate*)dasDatum ganzerTag:1];
    uint8_t AD_type  = 0x01;
    uint8_t ADchanel  = 0x01;
    tempADtype = (AD_type & 0x01) << 1 ;
@@ -2016,7 +2017,7 @@ return;
     return [NSDictionary dictionaryWithDictionary:entry];
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView
 {
     return [logEntries count];
 }
@@ -2515,6 +2516,19 @@ return;
 	//return YES;
 }
 
+-(void)DruckDatenSchreibenMitDate:(NSDate*)dasDatum ganzerTag:(int)ganz
+{
+   NSCalendar* calendar = [NSCalendar currentCalendar];
+   NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:dasDatum]; // Get necessary date components
+   long monat = [components month]; //gives you month
+   long tag = [components day]; //gives you day
+   long jahr = [components year]; // gives you year
+   long stunde = [components hour]; // hour
+   long minute = [components minute]; // minute
+   NSLog(@"DruckDatenSchreibenMitDate tag: %ld monat: %ld jahr: %ld stunde: %ld minute: %ld",tag,monat,jahr,stunde, minute);
+
+}
+
 -(void)DruckDatenSchreibenMitDatum:(NSCalendarDate*)dasDatum ganzerTag:(int)ganz
 {
 	BOOL USBDatenDa=NO;
@@ -2761,6 +2775,7 @@ return;
 				object:nil];
 */
 
+   /*
 	if ([[[note object]title]isEqualToString:@"Einstellungen"])
 	{
 		return;
@@ -2771,6 +2786,7 @@ return;
 		[NSApp terminate:self];
 		
 	}
+    */
 	return;
    
 }

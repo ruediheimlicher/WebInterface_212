@@ -394,7 +394,7 @@ void IOWarriorDiscoverInterfaces ()
     ioReturnValue = IOMasterPort (bootstrap_port, &masterPort);
     if (ioReturnValue)
     {
-        PrintErrMsgIfIOErr (ioReturnValue, "Couldn’t create a master I/O Kit Port.");
+        PrintErrMsgIfIOErr (ioReturnValue, "Could not create a master I/O Kit Port.");
         return;
     }
     hidObjectIterator = IOWarriorFindHIDDevices (masterPort, kHIDPage_GenericDesktop, 0); 
@@ -494,7 +494,7 @@ io_iterator_t IOWarriorFindHIDDevices (const mach_port_t masterPort, UInt32 usag
     hidMatchDictionary = IOWarriorSetUpHIDMatchingDictionary (usagePage, usage);
     if (NULL == hidMatchDictionary)
     {
-        PrintErrMsg ("Couldn’t create a matching dictionary.");
+        PrintErrMsg ("Could not create a matching dictionary.");
         return NULL;
     }
 
@@ -503,7 +503,7 @@ io_iterator_t IOWarriorFindHIDDevices (const mach_port_t masterPort, UInt32 usag
     // If error, print message and hang (for debugging purposes).
     if ((ioReturnValue != kIOReturnSuccess) | (hidObjectIterator == NULL))
     {
-        PrintErrMsg ("Couldn’t create a HID object iterator.");
+        PrintErrMsg ("Could not create a HID object iterator.");
         return NULL;
     }
 

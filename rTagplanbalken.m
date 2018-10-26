@@ -588,7 +588,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[(rTagplanbalken*)[sender superview]Titel] forKey:@"titel"];//
 	[NotificationDic setObject:[NSNumber numberWithInt:1] forKey:@"permanent"];//
    [NotificationDic setObject:[NSNumber numberWithInt:TagbalkenTyp] forKey:@"tagbalkentyp"];//
-	//NSLog(@"Tagplanbalken WriteTasteAktion tagbalkentyp: %d typ: %d",tagbalkentyp,typ);
+	NSLog(@"Tagplanbalken WriteTasteAktion tagbalkentyp: %d ",TagbalkenTyp);
 	int modKey=0;
 	//int all=-1;
 	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
@@ -636,7 +636,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:objekt] forKey:@"objekt"];//
 	[NotificationDic setObject:[(rTagplanbalken*)[sender superview]Titel] forKey:@"titel"];//
    [NotificationDic setObject:[NSNumber numberWithInt:TagbalkenTyp] forKey:@"tagbalkentyp"];//
-   [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"permanent"];//
+   [NotificationDic setObject:[NSNumber numberWithInt:4] forKey:@"permanent"];//
 
    int modKey=0;
 	//int all=-1;

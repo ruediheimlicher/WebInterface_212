@@ -1220,7 +1220,20 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       
       //NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
-		NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10.0];
+		//NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10.0];
+      
+      NSMutableURLRequest *lastTimeRequest = [NSMutableURLRequest requestWithURL:lastTimeURL];
+      lastTimeRequest.timeoutInterval = 10.0;
+       [lastTimeRequest setHTTPMethod:@"GET"];
+      NSURLSession *session = [NSURLSession sharedSession];
+      NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+      NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
+
+//      NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:lastTimeRequest];
+//      [dataTask resume];
+
+      
+      
 		//NSLog(@"Cache mem: %d",[[NSURLCache sharedURLCache]memoryCapacity]);
 		
 	//	[[NSURLCache sharedURLCache] removeCachedResponseForRequest:lastTimeRequest];
@@ -1753,7 +1766,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    NSMutableIndexSet* ZeilenIndex = [NSMutableIndexSet indexSet];
    NSMutableArray* UpdateArray = [[NSMutableArray alloc]initWithCapacity:0];
 
-   for (int i=[UpdateArrayRaw count];i>0;i--)
+   for (int i=[UpdateArrayRaw count];i>0;i--) // von unten anfangen, neuste zuerst
    {
       NSString* tempZeile = [UpdateArrayRaw objectAtIndex:i-1];
       if ([tempZeile length] && ![ZeilenIndex containsIndex:[[[tempZeile componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue]])
@@ -1764,10 +1777,10 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          NSArray* tempZeilenArray = [tempZeile componentsSeparatedByString:@"\t"];
          NSLog(@"i: %d tempZeilenArray: %@",i,tempZeilenArray);
          int zeilennummer = [[tempZeilenArray objectAtIndex:0]intValue];
-         [ZeilenIndex addIndex:zeilennummer];
-         if ([tempZeilenArray count] >= (6+8))
+         [ZeilenIndex addIndex:zeilennummer]; // Zeilenindex speichern, nur letzter Datensatz pro dataadresse
+         if ([tempZeilenArray count] >= (6+8)) // genuegend Daten
          {
-            NSArray* tempDataArray = [tempZeilenArray subarrayWithRange:NSMakeRange(6, 8)];
+            NSArray* tempDataArray = [tempZeilenArray subarrayWithRange:NSMakeRange(6, 8)]; // nur data
             NSDictionary* tempDataDic = [NSDictionary dictionaryWithObjectsAndKeys:
                                          [NSNumber numberWithInt:zeilennummer],@"zeilennummer",
                                          tempZeile,@"zeile",
@@ -1788,7 +1801,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          }
       }
    }
-   NSLog(@"EEPROMUpdateAktion UpdateArray: %@",[UpdateArray description]);
+   NSLog(@"EEPROMUpdateAktion UpdateArray unsortiert: %@",[UpdateArray description]);
   // NSLog(@"EEPROMUpdateAktion UpdateArray vor: %@",[[UpdateArray valueForKey:@"zeilennummer" ] description]);
   
    NSComparator sortByNumber = ^(id dict1, id dict2)
@@ -2399,7 +2412,35 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
     }
 }
 
+// **************************************
+#pragma mark NSURLSession Delegate Methods
 
+// NSURLSessionDataDelegate - get continuous status of your request
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response
+ completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
+   NSLog(@" didReceiveResponse");
+   receivedData=nil; receivedData=[[NSMutableData alloc] init];
+   //[receivedData setLength:0];
+   
+   completionHandler(NSURLSessionResponseAllow);
+}
+//NSURLSessionDataDelegate
+
+-(void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
+   didReceiveData:(NSData *)data {
+   //receivedAnswerString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
+   //NSLog(@"didReceiveData: receivedAnswerString: %@",receivedAnswerString);
+   NSString * HTML_Inhalt = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
+   NSLog(@"didReceiveData: HTML_Inhalt: %@",HTML_Inhalt);
+   NSRange CheckRange;
+   NSString* Datum_String= @"Datum:";
+   CheckRange = [HTML_Inhalt rangeOfString:Datum_String];
+   if (CheckRange.location < NSNotFound) // es ist eine Datum-Antwort
+   {
+      
+   }
+   
+}
 
 #pragma mark NSURLDownloadDelegate methods
 

@@ -57,7 +57,7 @@
 
 
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView
 {
     return [DumpTabelle count];
 }

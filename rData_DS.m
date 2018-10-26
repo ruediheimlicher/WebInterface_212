@@ -65,7 +65,7 @@ NSLog(@"Data_DS setRaumData: DataDic: %@",[derDataDic description]);
 
 
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView
+- (long)numberOfRowsInTableView:(NSTableView *)aTableView
 {
     return [WochenplanTabelle count];
 }

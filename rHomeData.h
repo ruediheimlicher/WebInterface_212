@@ -61,6 +61,10 @@
    NSMutableData *         StromCentralData;
    NSString* StromDataSuffix;
    
+   NSString* debugstring;
+   NSData* receivedData;
+   NSString* receivedAnswerString;
+
    
 }
 - (IBAction)downloadOrCancel:(id)sender;
