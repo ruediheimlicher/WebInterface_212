@@ -340,10 +340,10 @@ extern NSMutableArray* DatenplanTabelle;
 	
 	//[StdCell selectSegmentWithTag:1];
 	//NSRect r=[[StdCell contentView] frame];
-   NSDate* heute = [NSCalendarDate calendarDate];
-	DatenserieStartZeit=[NSCalendar currentCalendar];
+   NSDate* heute = [NSDate date];
+	DatenserieStartZeit=[NSDate date];
    //[NSCalendarDate date] > [NSCalendar currentCalendar]
-	SimDatenserieStartZeit=[NSCalendarDate calendarDate];
+	SimDatenserieStartZeit=[NSDate date];
 	
 	[Kalender setCalendar:[NSCalendar currentCalendar]];
 	[Kalender setDateValue: [NSDate date]];
@@ -375,7 +375,7 @@ extern NSMutableArray* DatenplanTabelle;
 	//NSLog(@"tag: %d jahr: %d",tag,jahr);
 	
 	
-	[TemperaturDaten setObject:[NSCalendarDate calendarDate] forKey:@"datenseriestartzeit"];
+	[TemperaturDaten setObject:[NSDate date] forKey:@"datenseriestartzeit"];
 	
 	NSMutableArray* tempStartWerteArray=[[NSMutableArray alloc]initWithCapacity:8];
 	int i;
@@ -2455,7 +2455,7 @@ extern NSMutableArray* DatenplanTabelle;
 	NSString* StartDatenString=[[[TemperaturDatenFeld string]componentsSeparatedByString:@"\r"]objectAtIndex:0];
 	
    //NSLog(@"LastDatenAktion StartDatenString: *%@*",StartDatenString);
-	NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
+//	NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
 	DLog(@"LastDatenaktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"lastdatenarray"])
@@ -2466,8 +2466,9 @@ extern NSMutableArray* DatenplanTabelle;
    }
 	if ([[note userInfo]objectForKey:@"startzeit"])
 	{
-		DatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
-	}
+		//DatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
+      DatenserieStartZeit = [[note userInfo]objectForKey:@"startzeit"];
+   }
 	//int firsttag=[DatenserieStartZeit dayOfMonth];
 	int firstZeit=0;
 	if (StartDatenString && [StartDatenString length])

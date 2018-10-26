@@ -1834,7 +1834,7 @@ if (Webserver_busy)
          NSButtonCell* radiozelle = [[NSButtonCell alloc]init];
          [radiozelle setTitle:@" "];
          [radiozelle setButtonType:NSRadioButton];
-         [radiozelle setControlSize: NSMiniControlSize];
+         [radiozelle setControlSize: NSControlSizeMini];
          
          
          NSMatrix* UpdateRadio = [[NSMatrix alloc ]initWithFrame:Radiorect
