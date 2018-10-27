@@ -2896,6 +2896,8 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 	Quelle=1;
 	if ([[note userInfo]objectForKey:@"startzeit"])
 	{
+      
+      /*
 		NSString* StartzeitString = [[note userInfo]objectForKey:@"startzeit"];
 		//NSLog(@"ExterneSolarDatenAktion: Startzeit: *%@* StartzeitString: *%@*",[[note userInfo]objectForKey:@"startzeit"],StartzeitString);
       NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -2904,18 +2906,56 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
       
 		NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
 		SolarDatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
+*/
+      // Datenseriestartzeit fuer ausgewaehltes Datum anpassen
+      NSString* datumstring = [[note userInfo]objectForKey:@"startzeit"];
+      NSMutableArray * startzeitarray = (NSMutableArray *)[datumstring componentsSeparatedByString:@" "];
+      if ([[startzeitarray objectAtIndex:0] length ]== 0)
+      {
+         [startzeitarray removeObjectAtIndex:0];
+      }
+      //NSString* datumteil = [[datumstring componentsSeparatedByString:@" "]objectAtIndex:0];
+      NSString* datumteil = [startzeitarray objectAtIndex:0];
+      //NSString* zeitteil = [[datumstring componentsSeparatedByString:@" "]objectAtIndex:1];
+      NSString* zeitteil = [startzeitarray objectAtIndex:1];
+      int jr = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:0]intValue];
+      int mon = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:1]intValue];
+      int tg = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:2] intValue];
       
-      
-      long tag = [[NSCalendar currentCalendar] component:NSCalendarUnitDay  fromDate:SolarDatenserieStartZeit];
+      SolarDatenserieStartZeit = [self DatumvonJahr:jr Monat:mon Tag: tg];
+      NSLog(@"ExterneSolarDatenAktion: SolarDatenserieStartZeit: %@",SolarDatenserieStartZeit);
+
+      //long tag = [[NSCalendar currentCalendar] component:NSCalendarUnitDay  fromDate:SolarDatenserieStartZeit];
 		//long tag=[SolarDatenserieStartZeit dayOfMonth];
+      
+      NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:SolarDatenserieStartZeit];
+      NSInteger tagdesmonats = [heutecomponents day];
+      NSInteger monat = [heutecomponents month];
+      NSInteger jahr = [heutecomponents year];
+      NSInteger stunde = [heutecomponents hour];
+      NSInteger minute = [heutecomponents minute];
+      NSInteger sekunde = [heutecomponents second];
+      jahr-=2000;
+      //NSString* StartZeit = [NSString stringWithFormat:@"%02ld.%02ld.%02ld",(long)tagdesmonats,(long)monat,(long)jahr];
+      NSString* StartZeitString = [NSString stringWithFormat:@"%02ld.%02ld.%02ld %02ld:%02ld",(long)tagdesmonats,(long)monat,(long)jahr,(long)stunde,(long)minute];
 		
 		NSMutableDictionary* NotificationDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 		[NotificationDic setObject:@"datastart"forKey:@"data"];
 		[NotificationDic setObject:SolarDatenserieStartZeit forKey:@"datenseriestartzeit"];
 		
-		NSCalendarDate* AnzeigeDatum= [SolarDatenserieStartZeit copy];
-		[AnzeigeDatum setCalendarFormat:@"%d.%m.%y %H:%M"];
-		[SolarStartzeitFeld setStringValue:[AnzeigeDatum description]];
+      
+      NSDateFormatter *dateformat = [[NSDateFormatter alloc] init];
+      //[dateformat setDateFormat:@"%d.%m.%y %H:%M"];
+      dateformat.dateStyle = NSDateFormatterLongStyle;
+      dateformat.timeStyle = NSDateFormatterMediumStyle;
+      
+      
+      //NSString *AnzeigeString  = [dateformat stringFromDate:SolarDatenserieStartZeit];
+      [SolarStartzeitFeld setStringValue:StartZeitString];
+		//NSCalendarDate* AnzeigeDatum= [SolarDatenserieStartZeit copy];
+//		[AnzeigeDatum setCalendarFormat:@"%d.%m.%y %H:%M"];
+		
+     // [SolarStartzeitFeld setStringValue:[AnzeigeDatum description]];
 		NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 		
 		[nc postNotificationName:@"data" object:NotificationDic userInfo:NotificationDic];
