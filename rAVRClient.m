@@ -833,7 +833,8 @@
 		if (anz < 4)
 		{
 			anz++;
-			srand([[NSDate date]timeIntervalSinceReferenceDate]);
+			//srand([[NSDate date]timeIntervalSinceReferenceDate]);
+         
 			float a=(float)random() / RAND_MAX * (7);
 			int simTag=a;
 			float b=(float)random() / RAND_MAX * (4);

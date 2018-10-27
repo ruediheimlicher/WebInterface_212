@@ -87,11 +87,19 @@
 {
 	[super StartAktion:note];
 	//NSLog(@"DiagrammGitterlinien StartAktion note: %@",[[note userInfo]description]);
-   //NSLog(@"DiagrammGitterlinien StartAktion DatenserieStartZeit: %@",[DatenserieStartZeit description]);
+   NSLog(@"DiagrammGitterlinien StartAktion DatenserieStartZeit: %@",[DatenserieStartZeit description]);
+   
+   NSDateFormatter* formatter ;
+   formatter.dateFormat = @"yyyy";
+//   NSString* dateString = [RFC3339DateFormatter dateFromString:string];
+   NSArray* startzeitarray = [[DatenserieStartZeit description] componentsSeparatedByString:@" "];
+   NSString* startzeitline = [startzeitarray objectAtIndex:1]; 
+   StartStunde = [[[startzeitline componentsSeparatedByString:@":"]objectAtIndex:0]intValue];
+   StartMinute = [[[startzeitline componentsSeparatedByString:@":"]objectAtIndex:1]intValue];
+   
+   //StartStunde=[[NSCalendar currentCalendar] component:NSCalendarUnitHour  fromDate:DatenserieStartZeit];
 
-   StartStunde=[[NSCalendar currentCalendar] component:NSCalendarUnitHour  fromDate:DatenserieStartZeit];
-
-   StartMinute=[[NSCalendar currentCalendar] component:NSCalendarUnitMinute  fromDate:DatenserieStartZeit];
+   //StartMinute=[[NSCalendar currentCalendar] component:NSCalendarUnitMinute  fromDate:DatenserieStartZeit];
 
 	//NSLog(@"DiagrammGitterlinien StartStunde: %d StartMinute: %d",StartStunde, StartMinute);
 	

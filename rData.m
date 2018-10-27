@@ -2853,15 +2853,16 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 
 
 	[self clearSolarData];
-	NSCalendarDate* StartZeit=[NSCalendarDate calendarDate];
-	[StartZeit setCalendarFormat:@"%d.%m.%y %H:%M"];
-//	[StartzeitFeld setStringValue:[StartZeit description]];
+	NSDate* StartZeit=[NSDate date];
+	//[StartZeit setCalendarFormat:@"%d.%m.%y %H:%M"];
+	[StartzeitFeld setStringValue:[StartZeit description]];
 
 	[SolarStartzeitFeld setStringValue:@""];
 
 	NSMutableDictionary* NotificationDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 	[NotificationDic setObject:@"clear"forKey:@"data"];
-	SolarDatenserieStartZeit=[NSCalendarDate calendarDate];
+	SolarDatenserieStartZeit=[NSDate date];
+   
 	[NotificationDic setObject:DatenserieStartZeit forKey:@"datenseriestartzeit"];
 //	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 //	[nc postNotificationName:@"data" object:NULL userInfo:NotificationDic];
