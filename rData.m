@@ -357,6 +357,12 @@ extern NSMutableArray* DatenplanTabelle;
 
 - (void)awakeFromNib
 {
+   int currentDay;
+   NSDateFormatter*dateFormatter = [[NSDateFormatter alloc] init];
+   [dateFormatter setDateFormat:@"D"];
+   NSDate* date = [NSDate date];
+   currentDay = [[dateFormatter stringFromDate:date] intValue];
+
 	[SolaranlageBild setImage: [NSImage imageNamed: @"Solar.jpg"]];
 	//oldHour=[[NSCalendarDate date]hourOfDay];
 	Data_DS=[[rData_DS alloc]init];
@@ -1532,7 +1538,7 @@ extern NSMutableArray* DatenplanTabelle;
    NSMutableArray *TabArray = [NSMutableArray arrayWithCapacity:14];
    NSMutableAttributedString   *tempAttString;
    tempMutableParagraphStyle = [[NSParagraphStyle defaultParagraphStyle]mutableCopy];
-   [tempMutableParagraphStyle setAlignment:NSLeftTextAlignment];
+   [tempMutableParagraphStyle setAlignment:NSTextAlignmentLeft];
    
    /*
     possible tab stop types
@@ -3318,11 +3324,12 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
       //NSString* StartDatenString=[[[SolarDatenFeld string]componentsSeparatedByString:@"\r"]objectAtIndex:1];
       NSString* StartDatenString=[StartDatenArray objectAtIndex:0];
       NSLog(@"LastSolarDatenAktion StartDatenString: %@",StartDatenString);
-      NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
+      //NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
       //NSLog(@"LastSolarDatenaktion note: %@",[[note userInfo]description]);
       if ([[note userInfo]objectForKey:@"startzeit"])
       {
-         SolarDatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
+         //SolarDatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
+         SolarDatenserieStartZeit= [self DateVonString:[[note userInfo]objectForKey:@"startzeit"] ];
       }
       
       
@@ -3602,7 +3609,7 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 	NSLog(@"clearSolarData");
 	[SolarDatenFeld setString:[NSString string]];
 	AnzDaten=0;
-	SolarDatenserieStartZeit=[NSCalendarDate calendarDate];
+	SolarDatenserieStartZeit=[NSDate date];
 	//NSDictionary* DatumDic=[NSDictionary dictionaryWithObject:DatenserieStartZeit forKey:@"datenseriestartzeit"];
 	
 	NSMutableDictionary* NotificationDic=[[NSMutableDictionary alloc]initWithCapacity:0];
@@ -5776,9 +5783,6 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 }
 - (void)writeIOWLog:(NSString*)derFehler
 {
-NSLog(@"Data writeIOWLog: %@",derFehler);
-NSString* tempFehlerString=[IOWFehlerLog string];
-[IOWFehlerLog setString:[NSString stringWithFormat:@"%@\n%@  Zeit: %@",tempFehlerString, derFehler,[NSCalendarDate calendarDate]]];
 
 }
 

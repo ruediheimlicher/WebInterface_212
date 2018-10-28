@@ -366,7 +366,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:Objekt] forKey:@"objekt"];
 	int modKey=0;
 	int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		NSLog(@"AllTasteAktion alt"); // Alle Tage synchronisieren
 		modKey=2;
@@ -381,12 +381,12 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 			[nc postNotificationName:@"Modifier" object:self userInfo:NotificationDic];
 
 	}
-	else if(([[NSApp currentEvent] modifierFlags] & NSControlKeyMask)  != 0)
+   else if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagControl)  != 0)
    {
       NSLog(@"AllTasteAktion ctrl");
       modKey=3;
 
-      if(([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask)  != 0)
+      if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagCommand)  != 0)
       {
          NSLog(@"AllTasteAktion ctrl und cmd");
       }
@@ -539,7 +539,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	//NSLog(@"StundentastenAktion start lastONArray: %@",[lastONArray description]);
 	int modKey=0;
 	int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		NSLog(@"StundenTasteAktion Alt");
 		modKey=2;
@@ -633,7 +633,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	//NSLog(@"rServoTagplanbalken WriteTasteAktion Typ: %d",tagbalkentyp);
 	int modKey=0;
 	//int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"WriteTasteAktion Alt-Taste");
 		modKey=2;
@@ -680,7 +680,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 
    int modKey=0;
 	//int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"WriteTasteAktion Alt-Taste");
 		modKey=2;
@@ -929,20 +929,19 @@ return mark;
 	// NSLog(@"mouseDown: objekt: %d",Raum );
 	int MausIN=0;
 	unsigned int Mods=[theEvent modifierFlags];
-   //NSLog(@"Mods: %d",Mods );
+   //NSLoNSEventModifierFlagCommandds );
 	int modKey=0;
-	if (Mods & NSCommandKeyMask)
+   if (Mods & NSEventModifierFlagCommand)
 	{
-		NSLog(@"mouseDown: Command");
+      NSLog(@"mouseNSEventModifierFlagControl");
 		modKey=1;
 	}
-	else if (Mods & NSControlKeyMask)
+   else if (Mods & NSEventModifierFlagControl)
 	{
-		NSLog(@"mouseDown: Control");
-		modKey=3;
+      NSLog(@"mouseDoNSEventModifierFlagOptionodKey=3");
 	}
 	
-	else if (Mods & NSAlternateKeyMask)
+   else if (Mods & NSEventModifierFlagOption)
 	{
 		NSLog(@"mouseDown: Alt");
 		modKey=2;

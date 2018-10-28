@@ -479,7 +479,7 @@ void IOWarriorCallback ()
       NSString* s1=@"Auswahl";
       NSString* InformationString=[NSString stringWithFormat:@"%@",s1];
       [Warnung setInformativeText:InformationString];
-      [Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
       
       int antwort=[Warnung runModal];
       NSLog(@"Connection: %d",antwort);
@@ -1798,7 +1798,7 @@ return;
     IOWarriorListNode* 	listNode;
     int                 reportSize;
 	NSMutableArray*	DatenArray=[[NSMutableArray alloc]initWithCapacity:0];
-	
+	/*
     listNode = IOWarriorInterfaceListNodeAtIndex ([interfacePopup indexOfSelectedItem]);
     if (nil == listNode) // if there is no interface, exit and don't invoke timer again
         return;
@@ -1903,6 +1903,7 @@ return;
 		}	// id anz==2
 	free (buffer);
 	}	// if listNode
+    */
 }
 
 - (int) reportSizeForInterfaceType:(int) inType
@@ -2761,7 +2762,7 @@ return;
 		NSString* s2=@"";
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		int antwort=[Warnung runModal];
 		return NO;
@@ -2771,7 +2772,7 @@ return;
 	[self savePListAktion:NULL];
 	if ([Data Datenquelle]==0)	// Daten von IOW
 	{
-		[self DruckDatenSchreibenMitDatum:[NSCalendarDate date] ganzerTag:NO];
+		[self DruckDatenSchreibenMitDate:[NSDate date] ganzerTag:NO];
 	}
 	//NSLog(@"Beenden vor saveErrString");
 	BOOL saveOK=[Data saveErrString];
@@ -2798,7 +2799,7 @@ return;
 				object:nil];
 */
 
-   /*
+   
 	if ([[[note object]title]isEqualToString:@"Einstellungen"])
 	{
 		return;
@@ -2809,7 +2810,7 @@ return;
 		[NSApp terminate:self];
 		
 	}
-    */
+    
 	return;
    
 }

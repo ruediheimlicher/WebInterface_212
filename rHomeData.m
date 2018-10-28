@@ -92,6 +92,7 @@ enum downloadflag{downloadpause, heute, last, datum}downloadFlag;
    NSCalendar *gregorian =[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
    int dayOfYear =(int)[gregorian ordinalityOfUnit:NSCalendarUnitDay
                                        inUnit:NSCalendarUnitYear forDate:tagdatum];
+   
    return dayOfYear;
 }
 

@@ -325,7 +325,7 @@ return self;
       //NSLog(@"StundentastenAktion start lastONArray: %@",[lastONArray description]);
       int modKey=0;
       int all=-1;
-      if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+      if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
       {
          NSLog(@"StundenTasteAktion Alt");
          modKey=2;
@@ -550,7 +550,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:objekt] forKey:@"objekt"];
 	int modKey=0;
 	int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"AllTasteAktion Alt");
 		modKey=2;
@@ -920,24 +920,24 @@ key "modenacht"	Einschaltzeiten Mode Nacht		0: off						1: reduziert				2: voll
 	int MausIN=0;
 	unsigned int Mods=[theEvent modifierFlags];
 	int modKey=0;
-	if (Mods & NSCommandKeyMask)
+   if (Mods & NSEventModifierFlagCommand)
 	{
 		NSLog(@"mouseDown: Command");
 		modKey+=1;
 	}
-	else if (Mods & NSControlKeyMask)
+   else if (Mods & NSEventModifierFlagControl)
 	{
 		NSLog(@"mouseDown: Control");
 		modKey+=4;
 	}
 	
-	else if (Mods & NSAlternateKeyMask)
+   else if (Mods & NSEventModifierFlagOption)
 	{
 		NSLog(@"mouseDown: Alt");
 		modKey+=2;
 		
 	}
-	else if (Mods & NSShiftKeyMask)
+   else if (Mods & NSEventModifierFlagShift)
 	{
 		NSLog(@"mouseDown: shift");
 		modKey+=8;

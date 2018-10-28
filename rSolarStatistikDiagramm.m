@@ -364,6 +364,7 @@ return dayOfYear;
 		
 	continue;
 		
+      /*
 		// 
 		int Monat;
 		int Jahr;
@@ -378,7 +379,7 @@ return dayOfYear;
          
          NSDate *today = [NSDate date];
          NSCalendar *gregorian = [[NSCalendar alloc]
-                                  initWithCalendarIdentifier:NSGregorianCalendar];
+                                  initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
          NSDateComponents *weekdayComponents =
          [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit) fromDate:today];
          NSInteger day = [weekdayComponents day];
@@ -390,7 +391,7 @@ return dayOfYear;
 	//		TagDesJahres=[aktDatum dayOfYear];
 	//		NSLog(@"TagDesMonats: %d Monat: %d Jahr: %d TagDesJahres: %d",TagDesMonats, Monat, Jahr,TagDesJahres);
 		}// if datum
-		
+		*/
 		continue;
 		
 		

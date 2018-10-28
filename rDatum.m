@@ -26,7 +26,12 @@
 
 - (int)tagdesjahres
 {
-   
+   int currentDay;
+   NSDateFormatter*dateFormatter = [[NSDateFormatter alloc] init];
+   [dateFormatter setDateFormat:@"D"];
+   NSDate* date = [NSDate date];
+   currentDay = [[dateFormatter stringFromDate:date] intValue];
+   return currentDay;
 }
 
 - (NSDate*)DatumvonJahr:(int)jahr Monat:(int)monat Tag:(int)tag

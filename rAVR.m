@@ -804,7 +804,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 		[[ObjektSeg cell] setTrackingMode:1];
 		NSFont* SegFont=[NSFont fontWithName:@"Helvetica" size: 10];
 		[[ObjektSeg cell] setFont:SegFont];
-		[[ObjektSeg cell] setControlSize:NSMiniControlSize];
+      [[ObjektSeg cell] setControlSize:NSControlSizeMini];
 		[ObjektSeg setTarget:self];
 		[ObjektSeg setAction:@selector(ObjektSegAktion:)];
 		[ObjektSeg setTag:(100*raum)];
@@ -1202,7 +1202,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 		[[ObjektSeg cell] setTrackingMode:1];
 		NSFont* SegFont=[NSFont fontWithName:@"Helvetica" size: 10];
 		[[ObjektSeg cell] setFont:SegFont];
-		[[ObjektSeg cell] setControlSize:NSMiniControlSize];
+   [[ObjektSeg cell] setControlSize:NSControlSizeMini];
 		[ObjektSeg setTarget:self];
 		[ObjektSeg setAction:@selector(ObjektSegAktion:)];
 		int i;
@@ -1939,7 +1939,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 	int Segment=(clickedSegmentTag-RAUMOFFSET)%10;
 	
 	//NSLog(@"Raum: %d Segment: %d",Raum, Segment);
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		NSTextField* LabelTextFeld;
 		//NSLog(@"ObjektSegAktion Alt");
@@ -2173,7 +2173,7 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 				NSString* s2=@"Der Slave mit dieser Adresse ist eventuell nicht eingesteckt";
 				NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 				[Warnung setInformativeText:InformationString];
-				[Warnung setAlertStyle:NSWarningAlertStyle];
+            [Warnung setAlertStyle:NSAlertStyleWarning];
 				
 				int antwort=[Warnung runModal];
 				
@@ -3329,7 +3329,7 @@ n=0;
          NSString* s2=@"";
          NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
          [Warnung setInformativeText:InformationString];
-         [Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
          
          int antwort=[Warnung runModal];
          return NO;

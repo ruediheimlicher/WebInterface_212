@@ -62,9 +62,10 @@
 
 - (int)tagDesJahres
 {
-NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-int dayOfYear = [gregorian ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:[NSDate date]];
-return dayOfYear;
+   NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+   NSUInteger dayOfYear = [gregorian ordinalityOfUnit:NSCalendarUnitDay
+                                        inUnit:NSCalendarUnitYear forDate:[NSDate date]];
+   return  dayOfYear;
 }
 
 /*

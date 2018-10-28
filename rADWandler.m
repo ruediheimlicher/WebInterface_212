@@ -394,7 +394,7 @@ NSLog(@"ADWandler reportCancel");
 	NSString* s2=@"";
 	NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 	[Warnung setInformativeText:InformationString];
-	[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 	
 	int antwort=[Warnung runModal];
 
@@ -692,7 +692,7 @@ NSLog(@"reportRead8Kanal");
 	NSString* s2=@"";
 	NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 	[Warnung setInformativeText:InformationString];
-	[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 	
 	int antwort=[Warnung runModal];
 
@@ -1229,7 +1229,7 @@ NSLog(@"reportClear8Kanal");
 			NSString* s2=@"";
 			NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 			[Warnung setInformativeText:InformationString];
-			[Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
 		
 			int antwort=[Warnung runModal];
 
@@ -1402,7 +1402,7 @@ NSLog(@"reportClear8Kanal");
 	NSString* s2=@"";
 	NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 	[Warnung setInformativeText:InformationString];
-	[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 	
 	int antwort=[Warnung runModal];
 
@@ -1693,7 +1693,7 @@ if ([TrackRandomTaste state])
 	NSString* s2=@"";
 	NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 	[Warnung setInformativeText:InformationString];
-	[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 	
 	int antwort=[Warnung runModal];
 

@@ -318,18 +318,18 @@ lastONArray=[[StundenArray valueForKey:@"werkstatt"]copy];
 	
 	unsigned int Mods=[theEvent modifierFlags];
 	int modKey=0;
-	if (Mods & NSCommandKeyMask)
+   if (Mods & NSEventModifierFlagCommand)
 	{
 		NSLog(@"mouseDown: Command");
 		modKey=1;
 	}
-	else if (Mods & NSControlKeyMask)
+   else if (Mods & NSEventModifierFlagControl)
 	{
 		NSLog(@"mouseDown: Control");
 		modKey=3;
 	}
 	
-	else if (Mods & NSAlternateKeyMask)
+   else if (Mods & NSEventModifierFlagOption)
 	{
 		NSLog(@"mouseDown: Alt");
 		modKey=2;

@@ -140,7 +140,7 @@
    NSString* s2=@"Das dauert ca. 3 min.";
    NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
    [Warnung setInformativeText:InformationString];
-   [Warnung setAlertStyle:NSWarningAlertStyle];
+   [Warnung setAlertStyle:NSAlertStyleWarning];
    NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
    [[input cell]setEchosBullets:YES];
    [input setStringValue:@"passwort"];
@@ -912,7 +912,7 @@ if (Webserver_busy)
 		NSString* s2=@"Quelle: WriteStandardAktion";
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		int antwort=[Warnung runModal];
 		
@@ -1126,7 +1126,7 @@ if (Webserver_busy)
    NSString* s2=@"";
    NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
    [Warnung setInformativeText:InformationString];
-   [Warnung setAlertStyle:NSWarningAlertStyle];
+   [Warnung setAlertStyle:NSAlertStyleWarning];
    
    int antwort=0;
    //antwort=[Warnung runModal];
@@ -1143,7 +1143,7 @@ if (Webserver_busy)
       
       
    }
-   else if (antwort == NSAlertAlternateReturn)
+   else if (antwort == NSAlertSecondButtonReturn)
    {
       NSLog(@"Daten auf eepromupdatedaten.txt behalten");
       [NotificationDic setObject:[NSNumber numberWithInt:12] forKey:@"perm"];
@@ -1185,7 +1185,7 @@ if (Webserver_busy)
     NSString* s2=@"Quelle: writeEEPROMWochenplan";
     NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
     [Warnung setInformativeText:InformationString];
-    [Warnung setAlertStyle:NSWarningAlertStyle];
+       [Warnung setAlertStyle:NSAlertStyleWarning];
     
     int antwort=[Warnung runModal];
     
@@ -1448,7 +1448,7 @@ if (Webserver_busy)
 
                
             }
-            else if (antwort == NSAlertAlternateReturn)
+            else if (antwort == NSAlertSecondButtonReturn)
             {
                NSLog(@"Daten auf eepromupdatedaten.txt behalten");
                [NotificationDic setObject:[NSNumber numberWithInt:12] forKey:@"perm"];
