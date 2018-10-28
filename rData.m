@@ -158,6 +158,45 @@ extern NSMutableArray* DatenplanTabelle;
    return tagdatum;
 }
 
+- (NSDate*)DateVonString:(NSString*)datumstring
+{
+   NSArray* datumstringarray= [datumstring componentsSeparatedByString:@" "];
+   
+   NSArray* datumarray=[[datumstringarray objectAtIndex:0] componentsSeparatedByString:@"-"];
+   // Datum
+   int jahr = [[datumarray objectAtIndex:0]intValue];
+   int monat = [[datumarray objectAtIndex:1]intValue];
+   int tag = [[datumarray objectAtIndex:2]intValue];
+   
+   // Zeit
+   NSArray* zeitarray = [[datumstringarray objectAtIndex:1] componentsSeparatedByString:@":"];
+   int stunde = [[zeitarray objectAtIndex:0]intValue];
+   int minute = [[zeitarray objectAtIndex:1]intValue];
+   int sekunde = [[zeitarray objectAtIndex:2]intValue];
+   
+   
+   
+   // http://stackoverflow.com/questions/7664786/generate-nsdate-from-day-month-and-year
+   NSCalendar *tagcalendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+   [tagcalendar setTimeZone:[NSTimeZone localTimeZone]];
+   [tagcalendar setLocale:[NSLocale currentLocale]];
+   
+   NSDateComponents *components = [[NSDateComponents alloc] init];
+   [components setDay:tag];
+   [components setMonth:monat];
+   [components setYear:jahr];
+   
+   [components setHour:stunde];
+   [components setMinute:minute];
+   [components setSecond:sekunde];
+   
+   NSDate *tagdatum = [tagcalendar dateFromComponents:components];
+   //NSLog(@"tagdatum: %@",[tagdatum description]);
+   //  NSCalendar *gregorian =[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+   // int dayOfYear =(int)[gregorian ordinalityOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitYear forDate:tagdatum];
+   return tagdatum;
+    
+}
 
 - (int)tagdesjahresvonJahr:(int)jahr Monat:(int)monat Tag: (int)tagdesmonats
 {
@@ -1720,6 +1759,9 @@ extern NSMutableArray* DatenplanTabelle;
 		
       // Datenseriestartzeit fuer ausgewaehltes Datum anpassen
       NSString* datumstring = [[note userInfo]objectForKey:@"startzeit"];
+      
+      NSDate* testdate = [self DateVonString:datumstring];
+      
       NSMutableArray * startzeitarray = (NSMutableArray *)[datumstring componentsSeparatedByString:@" "];
       if ([[startzeitarray objectAtIndex:0] length ]== 0)
       {
@@ -1733,7 +1775,8 @@ extern NSMutableArray* DatenplanTabelle;
       int mon = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:1]intValue];
       int tg = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:2] intValue];
       
-      DatenserieStartZeit = [self DatumvonJahr:jr Monat:mon Tag: tg];
+      //DatenserieStartZeit = [self DatumvonJahr:jr Monat:mon Tag: tg];
+      DatenserieStartZeit = [self DateVonString:datumstring];
 		NSLog(@"ExterneDatenAktion: DatenserieStartZeit: %@",DatenserieStartZeit);
 		NSMutableDictionary* NotificationDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 		[NotificationDic setObject:@"datastart"forKey:@"data"];
@@ -3246,6 +3289,17 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 
 - (void)LastSolarDatenAktion:(NSNotification*)note
 {
+   /*
+   NSDate *currentDate = [NSDate date];
+   NSCalendar* calendar = [NSCalendar currentCalendar];
+   NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:currentDate]; // Get necessary date components
+   
+   long monat = [components month]; //gives you month
+   long tag = [components day]; //gives you day
+   long jahr = [components year]; // gives you year
+   
+   NSLog(@"tag: %ld monat: %ld jahr: %ld",tag,monat,jahr);
+*/
 	int firstZeit=0;
    
 	if (Kalenderblocker)
@@ -3259,25 +3313,28 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
    {
       if (([[StartDatenArray objectAtIndex:0]length]==0))
       {
-         //[StartDatenArray removeObjectAtIndex:0];
+         [StartDatenArray removeObjectAtIndex:0];
       }
       //NSString* StartDatenString=[[[SolarDatenFeld string]componentsSeparatedByString:@"\r"]objectAtIndex:1];
       NSString* StartDatenString=[StartDatenArray objectAtIndex:0];
-      //	NSLog(@"LastSolarDatenAktion StartDatenString: %@",StartDatenString);
+      NSLog(@"LastSolarDatenAktion StartDatenString: %@",StartDatenString);
       NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
       //NSLog(@"LastSolarDatenaktion note: %@",[[note userInfo]description]);
       if ([[note userInfo]objectForKey:@"startzeit"])
       {
          SolarDatenserieStartZeit=[NSCalendarDate dateWithString:[[note userInfo]objectForKey:@"startzeit"] calendarFormat:Kalenderformat];
       }
+      
+      
+      
       //int firsttag=[SolarDatenserieStartZeit dayOfMonth];
       
       if (StartDatenString && [StartDatenString length])
       {
          // Zeit des ersten Datensatzes
-         
+         NSArray*StartDatenArray = [StartDatenString componentsSeparatedByString:@"\t"];
          firstZeit = [[[StartDatenString componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
-         //		NSLog(@"LastSolarDatenAktion firstZeit: %d",firstZeit);
+         NSLog(@"LastSolarDatenAktion firstZeit: %d",firstZeit);
       }
    }
 	

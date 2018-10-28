@@ -241,6 +241,9 @@ rTagGitterlinien*             SolarStatistikTagGitterlinien;
 
 }
 - (NSDateComponents*) heute;
+
+- (NSDate*)DateVonString:(NSString*)datumstring;
+
 - (void)setI2CStatus:(int)derStatus;
 - (void)setBrennerTagplan:(id)sender;
 

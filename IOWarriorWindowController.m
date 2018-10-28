@@ -767,6 +767,7 @@ void IOWarriorCallback ()
 }
 */
 /*" Invoked when user hits 'Read'-button. "*/
+/*
 - (IBAction)doRead:(id)sender
 {
 
@@ -779,7 +780,8 @@ void IOWarriorCallback ()
         [self startReading];
     }
 }
-
+*/
+/*
 - (void) stopReading
 {
 NSLog(@"stopReading begin");
@@ -836,6 +838,7 @@ NSLog(@"stopReading begin");
         IOWarriorSetInterruptCallback(listNode->ioWarriorHIDInterface, buffer, 8, reportHandlerCallback, CFBridgingRetain(self));
     }
 }
+*/
 
 void reportHandlerCallback (void *	 		target,
                    IOReturn                 result,
@@ -1066,13 +1069,13 @@ HomeDataDownload
 	{
 		if ([[[note userInfo]objectForKey:@"data"]isEqualToString:@"datastart"])
 		{
-			[self startReading];
+			//[self startReading];
 		}
 		
 		if ([[[note userInfo]objectForKey:@"data"]isEqualToString:@"datastop"])
 		{
 			
-			[self stopReading];
+			//[self stopReading];
 		}
 		
 		if ([[[note userInfo]objectForKey:@"data"]isEqualToString:@"savepart"])
@@ -1102,7 +1105,7 @@ HomeDataDownload
 			}
 			else
 			{
-				[self DruckDatenSchreibenMitDatum:[NSCalendarDate date] ganzerTag:YES];
+				[self DruckDatenSchreibenMitDate:[NSDate date] ganzerTag:YES];
 			}
 			[Data clearData];
 		}
@@ -1663,11 +1666,12 @@ return;
                DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
               // NSString *string = @"1996-12-19T16:39:57-08:00";
                NSString *string =  @"2017-03-12T00:00:48 +0100";
+               
                NSDate* StartZeit = [DateFormatter dateFromString:zeitstring];
                
                
                
-               NSString* Kalenderformat=[[NSCalendarDate date]calendarFormat];
+              // NSString* Kalenderformat=[[NSCalendarDate date]calendarFormat];
 					
 					//StartZeit=[NSCalendarDate dateWithString:StartDatumString calendarFormat:Kalenderformat];
 					
