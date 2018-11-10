@@ -183,6 +183,7 @@ void IOWarriorCallback ()
    webHostIP = [NSURL URLWithString:@"https://ruediheimlicherhome.dyndns.org"];
    
    
+   
    NSString* ASString = @"return do shell script \"curl http://checkip.dyndns.org/\"";
    NSAppleScript* IP_appleScript = [[NSAppleScript alloc] initWithSource: ASString];
    NSLog(@"IP_appleScript: %@ ",[IP_appleScript description]);
