@@ -1677,7 +1677,8 @@ extern NSMutableArray* DatenplanTabelle;
       }
       if ([dataArray count]>9)
       {
-         //dataArray = [dataArray subarrayWithRange:NSMakeRange([dataArray count]-9, 9)];
+         dataArray = [dataArray subarrayWithRange:NSMakeRange([dataArray count]-9, 9)];
+         NSLog(@"dataArray korr: %@",dataArray);
       }
       //  NSLog(@"dataArray korr: %@",dataArray);
       [LastDataFeld setStringValue:tempString];

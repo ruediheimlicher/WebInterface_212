@@ -595,7 +595,7 @@ void IOWarriorCallback ()
       
       //[Data setRouter_IP:@"192.168.1.210"];
    }
-   NSLog(@"end DatenVonHeute");
+   NSLog(@"awake end DatenVonHeute");
    
    
 #pragma mark awake Solar

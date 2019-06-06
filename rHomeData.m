@@ -225,8 +225,10 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       NSAppleScript *ipscript = [[NSAppleScript alloc] initWithSource:ipString];
       NSDictionary *iperrorMessage = nil;
+      //NSLog(@"HomeData DataVonHeute  vor execute");
       NSAppleEventDescriptor *ipresult = [ipscript executeAndReturnError:&iperrorMessage];
-      //NSLog(@"mount: %@",ipresult);
+      //NSLog(@"HomeData DataVonHeute  nach execute");
+      NSLog(@"mount: %@",ipresult);
       NSString *scriptReturn = [ipresult stringValue];
       NSLog(@"HomeData DataVonHeute Found ping string: %@",scriptReturn);
 
@@ -249,7 +251,6 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       }
       
       //NSString * localipString = [NSString localizedStringWithFormat:@"do shell script \"ping -c 2 192.168.1.212\""];
-       
       
       
 		DataSuffix=@"HomeDaten.txt";
