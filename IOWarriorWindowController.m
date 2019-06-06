@@ -554,8 +554,8 @@ void IOWarriorCallback ()
       
    NSLog(@"awake aktualHostIP: %@",actualHostIP);
    
-   [AVR setLocalHostIP:localHostIP];
-   [AVR setWebHostIP:webHostIP];
+   [AVR setLocalHostIP:[localHostIP path]];
+   [AVR setWebHostIP:[webHostIP path]];
    [AVR setAktuelleHostIP:actualHostIP];
    lastDataZeit=0;
    //[self startHomeData];

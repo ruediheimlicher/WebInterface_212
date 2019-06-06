@@ -72,11 +72,12 @@
 	float AnzeigeFaktor= maxSortenwert/maxAnzeigewert;
 	//NSLog(@"setWerteArray: FaktorY: %2.2f MaxY; %2.2F MinY: %2.2F maxAnzeigewert: %2.2F AnzeigeFaktor: %2.2F",FaktorY,MaxY,MinY,maxAnzeigewert, AnzeigeFaktor);
    //NSLog(@"setWerteArray:SortenFaktor: %2.2f",SortenFaktor);
-   //NSLog(@"setWerteArray:count: %lu",(unsigned long)[derWerteArray count]);
+   NSLog(@"setWerteArray:count: %lu",(unsigned long)[derWerteArray count]);
    
 	for (i=0;i<[derWerteArray count]-1;i++) // erster Wert ist Abszisse
-	{
-		if ([[derKanalArray objectAtIndex:i]intValue])
+   //for (i=0;i<8;i++) // erster Wert ist Abszisse // nur erste 9 Werte für Homediagramm
+      {
+		if ([derKanalArray objectAtIndex:i] && ([[derKanalArray objectAtIndex:i]intValue]))
 		{
 			//NSLog(@"+++			Temperatur  setWerteArray: Kanal: %d	x: %2.2f",i,[[derWerteArray objectAtIndex:0]floatValue]);
 			NSPoint neuerPunkt=DiagrammEcke;

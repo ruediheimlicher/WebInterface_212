@@ -13,7 +13,7 @@ enum downloadflag{downloadpause, heute, last, datum}downloadFlag;
 
 @implementation rHomeData
 
-- (void)setErrString:(NSString*)derErrString
+- (void)setErrString:(nonnull NSString*)derErrString
 {
 	NSMutableDictionary* NotificationDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 	[NotificationDic setObject:derErrString forKey:@"err"];
@@ -168,7 +168,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 }
 
 
-- (NSString*)DatumSuffixVonDate:(NSDate*)dasDatum
+- (NSString*)DatumSuffixVonDate:(nonnull NSDate*)dasDatum
 {
 	NSArray* DatumStringArray=[[dasDatum description]componentsSeparatedByString:@" "];
 	//NSLog(@"DatumStringArray: %@",[DatumStringArray description]);
@@ -241,7 +241,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          NSString* s1=@"Kein Web. Lokals Netz";
          NSString* InformationString=[NSString stringWithFormat:@"Comment: %@",s1];
          [Warnung setInformativeText:InformationString];
-         [Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
 
          int antwort=[Warnung runModal];
 
@@ -303,7 +303,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          //NSString* InformationString=[NSString stringWithFormat:@"%@\n%@\nFehler: %@",s1,s2,s3];
 			NSString* InformationString=[NSString stringWithFormat:@"%@\n%@\nFehler: %@",s1,s2,s3];
 			[Warnung setInformativeText:InformationString];
-			[Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
 			
 	//		int antwort=[Warnung runModal];
    //      NSLog(@"DataVonHeute antwort: %d",antwort);
@@ -442,8 +442,11 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			NSURLRequest* URLReq=[NSURLRequest requestWithURL:URL ];
 			if (URLReq)
 			{
+             
 				//download = [[WebDownload alloc] initWithRequest:[NSURLRequest requestWithURL:URL] delegate:self];
-				download = [[WebDownload alloc] initWithRequest:URLReq delegate:self];
+				
+            
+            download = [[WebDownload alloc] initWithRequest:URLReq delegate:self];
 				//NSLog(@"DataVon 2");
 				
 				
@@ -505,7 +508,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		//		NSString* URLString = [NSString stringWithFormat:@"%@/HomeCentralPrefs.txt",ServerPfad];
 		
 		
-		//ruediheimlicher
+		
       
       
 //      NSURL *lastTimeURL = [NSURL URLWithString:@"https://www.ruediheimlicher.ch/Data/HomeCentralPrefs.txt"];
@@ -513,7 +516,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       
       
 		//NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
-		NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:5.0];
+		NSMutableURLRequest* lastTimeRequest=[ [NSMutableURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:5.0];
       NSURLResponse* responseRequest;
 		//NSLog(@"Cache mem: %d",[[NSURLCache sharedURLCache]memoryCapacity]);
 		
@@ -522,6 +525,9 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 
 		NSError* syncErr=NULL;
 		NSData* lastTimeData=[ NSURLConnection sendSynchronousRequest:lastTimeRequest returningResponse: &responseRequest error: &syncErr ];
+      
+      
+      
 //      NSLog(@"responseRequest: *%@*",responseRequest.URL);
 		if (syncErr)
 		{
@@ -764,7 +770,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       NSString* s1=@"Kein Netz";
       NSString* InformationString=[NSString stringWithFormat:@"Fehler: %@",s1];
       [Warnung setInformativeText:InformationString];
-      [Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle: NSAlertStyleWarning];
       
       int antwort=[Warnung runModal];
       NSLog(@"Connection: %d",antwort);
@@ -890,7 +896,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          NSString* s3=[[[[WebFehler userInfo]objectForKey:@"NSUnderlyingError"]description]substringFromIndex:AnfIndex];
          NSString* InformationString=[NSString stringWithFormat:@"%@\n%@\nFehler: %@",s1,s2,s3];
          [Warnung setInformativeText:InformationString];
-         [Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle: NSAlertStyleWarning];
          
          int antwort=[Warnung runModal];
          return returnString;
@@ -1004,7 +1010,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			NSString* s3=[[[[WebFehler userInfo]objectForKey:@"NSUnderlyingError"]description]substringFromIndex:AnfIndex];
 			NSString* InformationString=[NSString stringWithFormat:@"%@\n%@\nFehler: %@",s1,s2,s3];
 			[Warnung setInformativeText:InformationString];
-			[Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
 			
 			int antwort=[Warnung runModal];
 			return returnString;
@@ -1220,18 +1226,17 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 	
       
       
-      //NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
-		//NSURLRequest* lastTimeRequest=[ [NSURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10.0];
+      NSMutableURLRequest* lastTimeRequest=[ [NSMutableURLRequest alloc] initWithURL: lastTimeURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
       
-      NSMutableURLRequest *lastTimeRequest = [NSMutableURLRequest requestWithURL:lastTimeURL];
-      lastTimeRequest.timeoutInterval = 10.0;
-       [lastTimeRequest setHTTPMethod:@"GET"];
+      lastTimeRequest.timeoutInterval = 30.0;
+      [lastTimeRequest setHTTPMethod:@"GET"];
       NSURLSession *session = [NSURLSession sharedSession];
       NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration ephemeralSessionConfiguration];
       NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
 
-//      NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:lastTimeRequest];
-//      [dataTask resume];
+      NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:lastTimeRequest];
+      [dataTask resume];
+      
 
       
       
@@ -1266,7 +1271,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		}
 		
 		NSString* lastDatumString = [lastTimeString substringFromIndex:7];
-		//NSLog(@"lastSolarDatumString: %@",lastDatumString);
+		NSLog(@"lastSolarDatumString: %@",lastDatumString);
 		[NotificationDic setObject:lastDatumString forKey:@"lasttimestring"];
 		
 	
@@ -1688,7 +1693,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          NSString* s3=[[[[WebFehler userInfo]objectForKey:@"NSUnderlyingError"]description]substringFromIndex:AnfIndex];
          NSString* InformationString=[NSString stringWithFormat:@"%@\n%@\nFehler: %@",s1,s2,s3];
          [Warnung setInformativeText:InformationString];
-         [Warnung setAlertStyle:NSWarningAlertStyle];
+         [Warnung setAlertStyle:NSAlertStyleWarning];
          
          int antwort=[Warnung runModal];
          return returnString;
@@ -2438,7 +2443,9 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    CheckRange = [HTML_Inhalt rangeOfString:Datum_String];
    if (CheckRange.location < NSNotFound) // es ist eine Datum-Antwort
    {
-      
+      NSString* datum = [[HTML_Inhalt componentsSeparatedByString:@" "]objectAtIndex:1];
+      NSString* zeit = [[HTML_Inhalt componentsSeparatedByString:@" "]objectAtIndex:2];
+      NSLog(@"didReceiveData Datum ist da: %@ Zeit: %@",datum, zeit);
    }
    
 }
@@ -2512,6 +2519,13 @@ NSLog(@"NSCachedURLResponse");
 - (void)download:(NSURLDownload *)download didCreateDestination:(NSString *)path
 {
  //   [self setFileName:path];
+}
+
+- (void)URLSession:(NSURLSession *)session 
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask 
+didFinishDownloadingToURL:(NSURL *)location
+{
+   NSLog(@"didFinishDownloadingToURL; %@",location);
 }
 
 - (void)downloadDidFinish:(NSURLDownload *)theDownload
