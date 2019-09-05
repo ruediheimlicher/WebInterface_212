@@ -2979,6 +2979,7 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 		//long tag=[SolarDatenserieStartZeit dayOfMonth];
       
       NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:SolarDatenserieStartZeit];
+      
       NSInteger tagdesmonats = [heutecomponents day];
       NSInteger monat = [heutecomponents month];
       NSInteger jahr = [heutecomponents year];

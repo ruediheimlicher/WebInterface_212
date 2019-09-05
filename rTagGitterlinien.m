@@ -88,9 +88,11 @@
    [super StartAktion:note];
    //NSLog(@"DiagrammGitterlinien StartAktion note: %@",[[note userInfo]description]);
    NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+   NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+
    NSCalendar *startcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
    startcalendar.firstWeekday = 2;
-   [startcalendar setTimeZone:gmtTimeZone];
+   [startcalendar setTimeZone:cetTimeZone];
    NSDateComponents *components = [startcalendar components:( NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ) fromDate:DatenserieStartZeit];
    int wd = components.weekday;
    int stunde = components.hour;
@@ -522,7 +524,7 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 				//NSLog(@"Gitterlinien i: %d Art: %d",i,art);
 				if (art==1)
 				{
-					//NSLog(@"Gitterlinien drucken",i,art);
+					NSLog(@"Gitterlinien drucken %d %d ",i,art);
 					[[NSColor lightGrayColor]set];
 					[SenkrechteLinie moveToPoint:TaguntenV];
 					[SenkrechteLinie lineToPoint:TagobenV];
@@ -530,6 +532,8 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 					[SenkrechteLinie stroke];
 					if ([[GraphArray objectAtIndex:i]objectForKey:@"tagstring"]) // ZeitString
 					{
+                  //NSLog(@"Gitterlinien drucken i: %d art: %d zeit: %@",i,art,[[GraphArray objectAtIndex:i]objectForKey:@"tagstring"]);
+
 						[[[GraphArray objectAtIndex:i]objectForKey:@"tagstring"]drawAtPoint:TagSchriftPunkt withAttributes:ZeitAttrs];
 					}
 					

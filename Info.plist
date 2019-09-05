@@ -27,5 +27,7 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+   <key>NSAppleEventsUsageDescription</key>
+   <string>App uses Applescript to get public IP</string>
 </dict>
 </plist>

@@ -245,7 +245,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          [Warnung setInformativeText:InformationString];
          [Warnung setAlertStyle:NSAlertStyleWarning];
 
-         int antwort=[Warnung runModal];
+         long antwort=[Warnung runModal];
 
          return returnString;
       }
@@ -916,7 +916,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          }
          //NSLog(@"SolarDataVonHeute DataString: \n%@",DataString);
          lastDataZeit=[self lastDataZeitVon:DataString];
-         //NSLog(@"SolarDataVonHeute lastDataZeit: %d",lastDataZeit);
+         NSLog(@"SolarDataVonHeute lastDataZeit: %d",lastDataZeit);
          
          // Auf WindowController Timer auslösen
          downloadFlag=heute;

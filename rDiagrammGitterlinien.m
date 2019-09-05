@@ -97,7 +97,7 @@
    StartStunde = [[[startzeitline componentsSeparatedByString:@":"]objectAtIndex:0]intValue];
    StartMinute = [[[startzeitline componentsSeparatedByString:@":"]objectAtIndex:1]intValue];
    
-   //StartStunde=[[NSCalendar currentCalendar] component:NSCalendarUnitHour  fromDate:DatenserieStartZeit];
+   StartStunde=[[NSCalendar currentCalendar] component:NSCalendarUnitHour  fromDate:DatenserieStartZeit];
 
    //StartMinute=[[NSCalendar currentCalendar] component:NSCalendarUnitMinute  fromDate:DatenserieStartZeit];
 
@@ -154,7 +154,7 @@
 				int Stunde = (StartStunde+ Minute / 60) % 24; // Stunde des Tages
 				//int AnzeigeStunde=
 				
-				//NSLog(@"***	  Gitterlinien Zeitwert (min): %d AnzeigeMinute: %d StartMinute: %d Minute: %d LinieOK: %d zeichnen: %d",Zeitwert/60,AnzeigeMinute,StartMinute,Minute,LinieOK,Minute % Intervall);
+            NSLog(@"***	  Gitterlinien Zeitwert (min): %d AnzeigeMinute: %d Startstunde: %d StartMinute: %d Minute: %d LinieOK: %d zeichnen: %d",Zeitwert/60,AnzeigeMinute,StartStunde,StartMinute,Minute,LinieOK,Minute % Intervall);
 
 				int Art=0;	// Linie fuer Intervall
 				
