@@ -2240,7 +2240,7 @@ unsigned char h2int(char c)
 
 -(void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-   NSLog(@"didReceiveResponse response: %@",response);
+   //NSLog(@"didReceiveResponse response: %@",response);
    }
 
 
@@ -2644,7 +2644,7 @@ unsigned char h2int(char c)
     if (frame == [sender mainFrame])
 	 {
         NSString *provurl = [[[[frame provisionalDataSource] request] URL] absoluteString];
-		  NSLog(@"HomeClient didStartProvisionalLoadForFrame: URL: %@",provurl);
+		  //NSLog(@"HomeClient didStartProvisionalLoadForFrame: URL: %@",provurl);
        
        // URL: http://ruediheimlicher.dyndns.org/twi?pw=ideur00&rdata=10
        

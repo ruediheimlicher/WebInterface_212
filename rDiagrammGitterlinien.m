@@ -88,7 +88,7 @@
 	[super StartAktion:note];
 	//NSLog(@"DiagrammGitterlinien StartAktion note: %@",[[note userInfo]description]);
    //NSLog(@"DiagrammGitterlinien StartAktion DatenserieStartZeit: %@",[DatenserieStartZeit description]);
-   
+   /*
    NSDateFormatter* formatter ;
    formatter.dateFormat = @"yyyy";
 //   NSString* dateString = [RFC3339DateFormatter dateFromString:string];
@@ -102,8 +102,19 @@
    //StartMinute=[[NSCalendar currentCalendar] component:NSCalendarUnitMinute  fromDate:DatenserieStartZeit];
 
 	//NSLog(@"DiagrammGitterlinien StartStunde: %d StartMinute: %d",StartStunde, StartMinute);
-	
-	
+	*/
+   NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+   
+   NSCalendar *startcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+   startcalendar.firstWeekday = 2;
+   [startcalendar setTimeZone:cetTimeZone];
+   NSDateComponents *components = [startcalendar components:( NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ) fromDate:DatenserieStartZeit];
+   int wd = components.weekday;
+   int stunde = components.hour;
+   int minute = components.minute;
+   StartStunde = components.hour; //
+   StartMinute = components.minute;
+
 	
 }
 
@@ -154,7 +165,7 @@
 				int Stunde = (StartStunde+ Minute / 60) % 24; // Stunde des Tages
 				//int AnzeigeStunde=
 				
-            NSLog(@"***	  Gitterlinien Zeitwert (min): %d AnzeigeMinute: %d Startstunde: %d StartMinute: %d Minute: %d LinieOK: %d zeichnen: %d",Zeitwert/60,AnzeigeMinute,StartStunde,StartMinute,Minute,LinieOK,Minute % Intervall);
+            //NSLog(@"***	  Gitterlinien Zeitwert (min): %d AnzeigeMinute: %d Startstunde: %d StartMinute: %d Minute: %d LinieOK: %d zeichnen: %d",Zeitwert/60,AnzeigeMinute,StartStunde,StartMinute,Minute,LinieOK,Minute % Intervall);
 
 				int Art=0;	// Linie fuer Intervall
 				

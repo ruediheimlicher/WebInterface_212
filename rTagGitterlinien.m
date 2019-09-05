@@ -88,6 +88,7 @@
    [super StartAktion:note];
    //NSLog(@"DiagrammGitterlinien StartAktion note: %@",[[note userInfo]description]);
    NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+  
    NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
 
    NSCalendar *startcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];

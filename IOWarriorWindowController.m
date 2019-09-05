@@ -927,7 +927,7 @@ HomeDataDownload
 	}
 		
 	//NSLog(@"HomeDataDownloadAktion flag: %d\n DataString: \n%@",flag, DataString);
-	//NSLog(@"HomeDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
+	NSLog(@"HomeDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
    
    // enum downloadflag{downloadpause, heute, last, datum}downloadFlag;
 	
@@ -1264,7 +1264,7 @@ NSLog(@"IOWarr WindowController reportPrint");
             
             // Datumstring nach leerschlaegen auftrennen
             NSArray* tempDatumArray= [DatumString componentsSeparatedByString:@" "];
-            //NSLog(@"openWithString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
+            NSLog(@"openWithString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
             
             switch ([tempDatumArray count])
             {
@@ -1278,7 +1278,7 @@ NSLog(@"IOWarr WindowController reportPrint");
                   
                   StartZeit=(NSDate*)StartDatumString; //[NSCalendarDate dateWithString:StartDatumString calendarFormat:Kalenderformat];
                   
-                  NSLog(@"StartZeit: %@",[StartZeit description]);
+                  NSLog(@"IOW StartZeit: %@",[StartZeit description]);
                   Tag=tagdesmonats;
                   Monat=monat;
                   Jahr=jahr;
@@ -1323,7 +1323,7 @@ NSLog(@"IOWarr WindowController reportPrint");
             
             rohDatenArray = [tempDatenArray subarrayWithRange:NSMakeRange(DataOffset,[tempDatenArray count]-DataOffset)];
             NSMutableArray* DatenArray=[[NSMutableArray alloc]initWithCapacity:0];
-            //NSLog(@"openWithString rohDatenArray count: %lu",(unsigned long)[rohDatenArray count]);
+            NSLog(@"openWithString rohDatenArray count: %lu",(unsigned long)[rohDatenArray count]);
             int i=0;
             for (i=0;i<[rohDatenArray count];i++)
                //for (i=0;i<1;i++)
@@ -1435,7 +1435,7 @@ SolarDataDownload
 	}
 		
 	//NSLog(@"SolarDataDownloadAktion flag: %d\n DataString: \n%@",flag, DataString);
-	//NSLog(@"SolarDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
+	NSLog(@"SolarDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
 
 	switch (flag)
 	{
@@ -1635,7 +1635,7 @@ return;
 			
 			
 			NSArray* tempDatumArray= [DatumString componentsSeparatedByString:@" "];
-			//NSLog(@"openWithSolarString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
+			NSLog(@"openWithSolarString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
 			
 			switch ([tempDatumArray count])
 			{
@@ -1726,7 +1726,7 @@ return;
 			
 			rohDatenArray = [tempDatenArray subarrayWithRange:NSMakeRange(DataOffset,[tempDatenArray count]-DataOffset)];
 			NSMutableArray* DatenArray=[[NSMutableArray alloc]initWithCapacity:0];
-			//NSLog(@"openWithSolarString rohDatenArray count: %d",[rohDatenArray count]);
+			NSLog(@"openWithSolarString rohDatenArray count: %d",[rohDatenArray count]);
 			int i=0;
 			/*
 			for (i=0;i<10;i++)

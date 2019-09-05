@@ -325,7 +325,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			}
 			//NSLog(@"DataVonHeute DataString: \n%@",DataString);
 			lastDataZeit=[self lastDataZeitVon:DataString];
-			//NSLog(@"DataVonHeute lastDataZeit: %d",lastDataZeit);
+			NSLog(@"DataVonHeute lastDataZeit: %d",lastDataZeit);
 			
 			// Auf WindowController Timer auslösen
 			downloadFlag=heute;
@@ -335,6 +335,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			[NotificationDic setObject:[NSNumber numberWithInt:lastDataZeit] forKey:@"lastdatazeit"];
          [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"quelle"];
 			[NotificationDic setObject:DataString forKey:@"datastring"];
+         //NSLog(@"DataVonHeute NotificationDic: %@",NotificationDic);
 			NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 			[nc postNotificationName:@"HomeDataDownload" object:self userInfo:NotificationDic];
 			//NSLog(@"Daten OK");
@@ -735,17 +736,17 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    NSURL* ipURL=[NSURL URLWithString:[dataURLString stringByAppendingPathComponent:IP_DataSuffix]];
                         
 	//NSLog(@"Router_IP URLPfad: %@",URLPfad);
-   NSLog(@"Router_IP ServerPfad: %@",ServerPfad);
+   //NSLog(@"Router_IP ServerPfad: %@",ServerPfad);
    NSURL *URL = [NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:IP_DataSuffix]];
-	NSLog(@"Router_IP URL: %@",URL );
-   NSLog(@"Router_IP URL Pfad: %@",[URL path]);
+	//NSLog(@"Router_IP URL: %@",URL );
+   //NSLog(@"Router_IP URL Pfad: %@",[URL path]);
 	NSStringEncoding *  enc=0;
 	NSCharacterSet* CharOK=[NSCharacterSet alphanumericCharacterSet];
    
    NSURL* dataURL =   [NSURL URLWithString:dataURLString];
    
 	NSString* DataString=[NSString stringWithContentsOfURL:dataURL usedEncoding: enc error:NULL];
-	NSLog(@"IP von Server: %@",DataString);
+	//NSLog(@"IP von Server: %@",DataString);
    NSArray* IP_Array = [DataString componentsSeparatedByString:@"\r\n"];
    //NSLog(@"IP von Server IP_Array: %@",IP_Array);
    
@@ -756,7 +757,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    NSAppleEventDescriptor *ipresult = [ipscript executeAndReturnError:&iperrorMessage];
    //NSLog(@"mount: %@",ipresult);
    NSString *scriptReturn = [ipresult stringValue];
-   NSLog(@"HomeData Found utxt string: %@",scriptReturn);
+   //NSLog(@"HomeData Found utxt string: %@",scriptReturn);
    if (scriptReturn == NULL)
    {
       NSAlert *Warnung = [[NSAlert alloc] init];
@@ -858,6 +859,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
       //NSString* URLPfad=[NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:@"SolarDaten.txt"]];
       //NSLog(@"DataVonHeute URLPfad: %@",URLPfad);
       //NSLog(@"SolarDataVonHeute  DownloadPfad: %@ DataSuffix: %@",ServerPfad,SolarDataSuffix);
+      
       NSURL *URL = [NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:SolarDataSuffix]];
       //NSLog(@"SolarDataVonHeute URL: %@",URL);
       //NSURL *URL = [NSURL URLWithString:@"http://www.schuleduernten.ch/blatt/cgi-bin/HomeDaten.txt"];
@@ -925,6 +927,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          [NotificationDic setObject:[NSNumber numberWithInt:downloadFlag] forKey:@"downloadflag"];
          [NotificationDic setObject:[NSNumber numberWithInt:lastDataZeit] forKey:@"lastdatazeit"];
          [NotificationDic setObject:DataString forKey:@"datastring"];
+         //NSLog(@"SolarDataVonHeute NotificationDic: %@",NotificationDic);
          NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
          [nc postNotificationName:@"SolarDataDownload" object:self userInfo:NotificationDic];
          //NSLog(@"Daten OK");
@@ -1272,7 +1275,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		}
 		
 		NSString* lastDatumString = [lastTimeString substringFromIndex:7];
-		NSLog(@"lastSolarDatumString: %@",lastDatumString);
+		//NSLog(@"lastSolarDatumString: %@",lastDatumString);
 		[NotificationDic setObject:lastDatumString forKey:@"lasttimestring"];
 		
 	
@@ -2425,7 +2428,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 // NSURLSessionDataDelegate - get continuous status of your request
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
-   NSLog(@" didReceiveResponse");
+   //NSLog(@" didReceiveResponse");
    receivedData=nil; receivedData=[[NSMutableData alloc] init];
    //[receivedData setLength:0];
    
@@ -2438,7 +2441,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    //receivedAnswerString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
    //NSLog(@"didReceiveData: receivedAnswerString: %@",receivedAnswerString);
    NSString * HTML_Inhalt = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
-   NSLog(@"didReceiveData: HTML_Inhalt: %@",HTML_Inhalt);
+   //NSLog(@"didReceiveData: HTML_Inhalt: %@",HTML_Inhalt);
    NSRange CheckRange;
    NSString* Datum_String= @"Datum:";
    CheckRange = [HTML_Inhalt rangeOfString:Datum_String];
@@ -2446,7 +2449,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
    {
       NSString* datum = [[HTML_Inhalt componentsSeparatedByString:@" "]objectAtIndex:1];
       NSString* zeit = [[HTML_Inhalt componentsSeparatedByString:@" "]objectAtIndex:2];
-      NSLog(@"didReceiveData Datum ist da: %@ Zeit: %@",datum, zeit);
+      //NSLog(@"didReceiveData Datum ist da: %@ Zeit: %@",datum, zeit);
    }
    
 }
@@ -2474,7 +2477,7 @@ NSLog(@"NSCachedURLResponse");
 {
 	
 	expectedContentLength = [response expectedContentLength];
-	NSLog(@"didReceiveResponse --  expectedContentLength: %d",expectedContentLength);
+	//NSLog(@"didReceiveResponse --  expectedContentLength: %d",expectedContentLength);
 	if (expectedContentLength > 0) 
 	{
 		// [progressIndicator setIndeterminate:NO];
@@ -2505,7 +2508,7 @@ NSLog(@"NSCachedURLResponse");
 - (void)download:(NSURLDownload *)theDownload didReceiveDataOfLength:(unsigned long)length
 {
 
-	NSLog(@"didReceiveResponse --  expectedContentLength: %d length: %ld",expectedContentLength,length);
+	//NSLog(@"didReceiveResponse --  expectedContentLength: %d length: %ld",expectedContentLength,length);
     if (expectedContentLength > 0) {
         receivedContentLength += length;
         [progressIndicator setDoubleValue:(double)receivedContentLength / (double)expectedContentLength];

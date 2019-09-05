@@ -776,8 +776,25 @@ extern NSMutableArray* DatenplanTabelle;
 	errString= [NSString string];
 	errPfad= [NSString string];
    
+   /*
+    NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+    
+    NSCalendar *startcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    startcalendar.firstWeekday = 2;
+    [startcalendar setTimeZone:cetTimeZone];
+    NSDateComponents *components = [startcalendar components:( NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ) fromDate:DatenserieStartZeit];
 
-   NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:[NSDate date]];
+    
+    */
+    NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+   NSCalendar *awakecalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+   awakecalendar.firstWeekday = 2;
+   [awakecalendar setTimeZone:cetTimeZone];
+
+
+   //NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:[NSDate date]];
+   NSDateComponents *heutecomponents = [awakecalendar components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:[NSDate date]];  
+   
    NSInteger tagdesmonats = [heutecomponents day];
    NSInteger monat = [heutecomponents month];
    NSInteger jahr = [heutecomponents year];
@@ -1678,7 +1695,7 @@ extern NSMutableArray* DatenplanTabelle;
       if ([dataArray count]>9)
       {
          dataArray = [dataArray subarrayWithRange:NSMakeRange([dataArray count]-9, 9)];
-         NSLog(@"dataArray korr: %@",dataArray);
+         //NSLog(@"dataArray korr: %@",dataArray);
       }
       //  NSLog(@"dataArray korr: %@",dataArray);
       [LastDataFeld setStringValue:tempString];
@@ -1804,15 +1821,38 @@ extern NSMutableArray* DatenplanTabelle;
       // [dateformat setDateFormat:@"%d.%m.%y %H:%M"];
       //  NSString *AnzeigeDatum  = [dateformat stringFromDate:DatenserieStartZeit];
       //[StartzeitFeld setStringValue:[AnzeigeDatum description]];
+      
+      /*
+       NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+       
+       NSCalendar *startcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+       startcalendar.firstWeekday = 2;
+       [startcalendar setTimeZone:cetTimeZone];
+       NSDateComponents *components = [startcalendar components:( NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ) fromDate:DatenserieStartZeit];
+       
+       
+       */
+
+      NSTimeZone *cetTimeZone = [NSTimeZone timeZoneWithName:@"CET"];
+      
+      NSCalendar *externcalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+      externcalendar.firstWeekday = 2;
+      [externcalendar setTimeZone:cetTimeZone];
+
+      
       NSCalendar *tagcalendar = [NSCalendar currentCalendar];
       [tagcalendar setFirstWeekday:2];
-      NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:DatenserieStartZeit];
+ //     NSDateComponents *heutecomponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:DatenserieStartZeit];
+      NSDateComponents *heutecomponents = [externcalendar components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:DatenserieStartZeit];
+      
+      
       NSInteger tagdesmonats = [heutecomponents day];
       NSInteger monat = [heutecomponents month];
       NSInteger jahr = [heutecomponents year];
       NSInteger stunde = [heutecomponents hour];
       NSInteger minute = [heutecomponents minute];
       NSInteger sekunde = [heutecomponents second];
+      
       jahr-=2000;
       NSString* StartZeit = [NSString stringWithFormat:@"%02ld.%02ld.%02ld",(long)tagdesmonats,(long)monat,(long)jahr];
       
@@ -2972,7 +3012,8 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
       int mon = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:1]intValue];
       int tg = [[[datumteil componentsSeparatedByString:@"-"]objectAtIndex:2] intValue];
       
-      SolarDatenserieStartZeit = [self DatumvonJahr:jr Monat:mon Tag: tg];
+      //SolarDatenserieStartZeit = [self DatumvonJahr:jr Monat:mon Tag: tg];
+      SolarDatenserieStartZeit = [self DateVonString:datumstring];
       NSLog(@"ExterneSolarDatenAktion: SolarDatenserieStartZeit: %@",SolarDatenserieStartZeit);
 
       //long tag = [[NSCalendar currentCalendar] component:NSCalendarUnitDay  fromDate:SolarDatenserieStartZeit];
