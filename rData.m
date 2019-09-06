@@ -310,13 +310,13 @@ extern NSMutableArray* DatenplanTabelle;
 
 
 	BrennerKanalArray=[[NSMutableArray alloc]initWithCapacity:0];
-	[BrennerKanalArray setArray:[NSArray arrayWithObjects:@"1",@"1",@"0",@"1" ,@"0",@"0",@"0",@"0",nil]];
+	[BrennerKanalArray setArray:[NSArray arrayWithObjects:@"1",@"1",@"0",@"1" ,@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",nil]];
 
 	BrennerStatistikKanalArray=[[NSMutableArray alloc]initWithCapacity:0];
-	[BrennerStatistikKanalArray setArray:[NSArray arrayWithObjects:@"1",@"0",@"0",@"0" ,@"0",@"0",@"0",@"0",nil]];
+	[BrennerStatistikKanalArray setArray:[NSArray arrayWithObjects:@"1",@"0",@"0",@"0" ,@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",nil]];
 
 	BrennerStatistikTemperaturKanalArray=[[NSMutableArray alloc]initWithCapacity:0];
-	[BrennerStatistikTemperaturKanalArray setArray:[NSArray arrayWithObjects:@"1",@"0",@"0",@"0" ,@"0",@"0",@"0",@"0",nil]];
+	[BrennerStatistikTemperaturKanalArray setArray:[NSArray arrayWithObjects:@"1",@"0",@"0",@"0" ,@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",nil]];
 	
 
 	SolarTemperaturKanalArray=[[NSMutableArray alloc]initWithCapacity:0];
@@ -639,9 +639,9 @@ extern NSMutableArray* DatenplanTabelle;
 	//[TemperaturDatenFeld setString:TabellenkopfString];
 	
 	float zeittab=50;
-	float werttab=30;
+	float werttab=25;
 	
-	int MKTextschnitt=12;
+	int MKTextschnitt=11;
 	NSFont* MKTextFont;
 	MKTextFont=[NSFont fontWithName:@"Helvetica" size: MKTextschnitt];
 	NSMutableString* MKTabellenkopfString=[NSMutableString stringWithCapacity:0];
@@ -686,6 +686,15 @@ extern NSMutableArray* DatenplanTabelle;
    TabellenkopfWertTab=[[NSTextTab alloc]initWithType:NSRightTabStopType location:zeittab+(8)*werttab];
    [MKTabellenKopfStil addTabStop:TabellenkopfWertTab];
    [MKTabellenkopfString appendFormat:@"\tI"];
+   TabellenkopfWertTab=[[NSTextTab alloc]initWithType:NSRightTabStopType location:zeittab+(9)*werttab];
+   [MKTabellenKopfStil addTabStop:TabellenkopfWertTab];
+   [MKTabellenkopfString appendFormat:@"\ts0"];
+   TabellenkopfWertTab=[[NSTextTab alloc]initWithType:NSRightTabStopType location:zeittab+(10)*werttab];
+   [MKTabellenKopfStil addTabStop:TabellenkopfWertTab];
+   [MKTabellenkopfString appendFormat:@"\ts1"];
+   TabellenkopfWertTab=[[NSTextTab alloc]initWithType:NSRightTabStopType location:zeittab+(11)*werttab];
+   [MKTabellenKopfStil addTabStop:TabellenkopfWertTab];
+   [MKTabellenkopfString appendFormat:@"\ts2"];
 
   
    
@@ -710,7 +719,7 @@ extern NSMutableArray* DatenplanTabelle;
 	[MKTabellenStil addTabStop:TabellenkopfZeitTab];
 	
 	[MKTabellenString appendFormat:@"\t"];// Zusätzlicher Tab fuer erste Zahl
-	for (i=0;i<8;i++) 
+	for (i=0;i<12;i++) 
 	{
 		NSTextTab* TabellenWertTab=[[NSTextTab alloc]initWithType:NSRightTabStopType location:zeittab+(i+1)*werttab];
 		[MKTabellenStil addTabStop:TabellenWertTab];
@@ -1884,7 +1893,7 @@ extern NSMutableArray* DatenplanTabelle;
 	if ([[note userInfo]objectForKey:@"datenarray"])
 	{
 		
-		NSArray* TemperaturKanalArray=	[NSArray arrayWithObjects:@"1",@"1",@"1",@"0" ,@"0",@"0",@"0",@"1",nil];
+		NSArray* TemperaturKanalArray=	[NSArray arrayWithObjects:@"1",@"1",@"1",@"0" ,@"0",@"0",@"0",@"1",@"0",@"0",@"0",@"0",nil];
 //		NSArray* BrennerKanalArray=		[NSArray arrayWithObjects:@"1",@"1",@"0",@"0" ,@"0",@"0",@"0",@"0",nil];
 		
 		NSArray* tempDatenArray = [[note userInfo]objectForKey:@"datenarray"];
@@ -1894,15 +1903,16 @@ extern NSMutableArray* DatenplanTabelle;
 		
 		// Zeit des ersten Datensatzes
 		int firstZeit = [[[[tempDatenArray objectAtIndex:0] componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
-		//NSLog(@"firstZeit: %d",firstZeit);
+		
 		
 		// Zeit des letzten Datensatzes
 		int lastZeit = [[[[tempDatenArray lastObject] componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
-		//NSLog(@"lastZeit: %d",lastZeit);
+		NSLog(@"ExterneDatenAktion firstZeit: %d lastZeit: %d",firstZeit,lastZeit);
+      //NSLog(@"lastZeit: %d",lastZeit);
 		[LaufzeitFeld setStringValue:[self stringAusZeit:lastZeit]]; 
 		
 		// Breite des DocumentViews bestimmen
-		lastZeit -= firstZeit;
+//		lastZeit -= firstZeit;
 		lastZeit *= ZeitKompression;
 		//NSLog(@"ExterneDatenaktion Zeitkompression: %2f2",ZeitKompression);
 		//	Origin des vorhandenen DocumentViews
@@ -1993,7 +2003,7 @@ extern NSMutableArray* DatenplanTabelle;
 			
 			//NSLog(@"ExterneDatenAktion einDatenString: %@\n tempZeilenArray:%@\n", einDatenString,[tempZeilenArray description]);
 			//NSLog(@"ExterneDatenAktion einDatenString: %@ count: %d", einDatenString, [tempZeilenArray count]);
-			if ([tempZeilenArray count]== 9) // Daten vollständig
+			if ([tempZeilenArray count]>= 9) // Daten vollständig
 			{
 	//			NSLog(@"ExterneDatenAktion tempZeilenArray:%@",[tempZeilenArray description]);
 				// Datenserie auf Startzeit synchronisieren
@@ -2546,7 +2556,7 @@ extern NSMutableArray* DatenplanTabelle;
 	
    //NSLog(@"LastDatenAktion StartDatenString: *%@*",StartDatenString);
 //	NSString* Kalenderformat=[[NSCalendarDate calendarDate]calendarFormat];
-	DLog(@"LastDatenaktion note: %@",[[note userInfo]description]);
+	NSLog(@"LastDatenaktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"lastdatenarray"])
    {
@@ -3112,8 +3122,8 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
       NSLog(@"externeSolarDatenAktion tempWertString: %@",tempWertString);
       
 		// Zeit des ersten Datensatzes
-		//int firstZeit = [[[[tempDatenArray objectAtIndex:0] componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
-		//NSLog(@"ExterneSolarDatenAktion firstZeit: %d",firstZeit);
+		int firstZeit = [[[[tempDatenArray objectAtIndex:0] componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
+		NSLog(@"ExterneSolarDatenAktion firstZeit: %d",firstZeit);
 		
 		// Zeit des letzten Datensatzes
 		int lastZeit = [[[[tempDatenArray lastObject] componentsSeparatedByString:@"\t"]objectAtIndex:0]intValue];
@@ -4997,7 +5007,7 @@ if ([[note userInfo]objectForKey:@"lasttimestring"])
 		}
 		[DatenpaketArray addObject:[NSNumber numberWithInt:0]];
 		[DatenpaketArray addObject:[NSNumber numberWithInt:0]];
-		NSArray* TemperaturKanalArray= [NSArray arrayWithObjects:@"1",@"1",@"1",@"1" ,@"1",@"0",@"0",@"0",nil];
+		NSArray* TemperaturKanalArray= [NSArray arrayWithObjects:@"1",@"1",@"1",@"1" ,@"1",@"0",@"0",@"0",@"0",@"0",@"0",@"0",nil];
 		NSArray* BrennerKanalArray=[NSArray arrayWithObjects:@"0",@"0",@"0",@"1" ,@"0",@"0",@"0",@"0",nil];
 		NSLog(@"SimReadAktion DatenpaketArray: %@",[DatenpaketArray description]);
 		//

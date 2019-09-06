@@ -1356,7 +1356,7 @@ NSLog(@"IOWarr WindowController reportPrint");
                [NotificationDic setObject:[NSNumber numberWithInt:Jahr] forKey:@"datumjahr"];
                [NotificationDic setObject:[ZeitString copy]forKey:@"datumzeit"];
                [NotificationDic setObject:[[StartZeit description] copy]forKey:@"startzeit"];
-               [NotificationDic setObject:[DatenArray copy] forKey:@"datenarray"];
+               [NotificationDic setObject:DatenArray  forKey:@"datenarray"];
                
                NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
                [nc postNotificationName:@"externedaten" object:self userInfo:NotificationDic];
@@ -1772,7 +1772,7 @@ return;
 				//[NotificationDic setObject:[[StartZeit description] copy]forKey:@"startzeit"];
             [NotificationDic setObject:StartZeitString forKey:@"startzeit"];
 				[NotificationDic setObject:[DatenArray copy] forKey:@"datenarray"];
-				NSLog(@"openWithSolarString NotificationDic: %@",[NotificationDic objectForKey:@"startzeit"] );
+				//NSLog(@"openWithSolarString NotificationDic: %@",[NotificationDic objectForKey:@"startzeit"] );
 				NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 				[nc postNotificationName:@"externesolardaten" object:self userInfo:NotificationDic];
 				

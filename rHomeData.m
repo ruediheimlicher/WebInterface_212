@@ -325,7 +325,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			}
 			//NSLog(@"DataVonHeute DataString: \n%@",DataString);
 			lastDataZeit=[self lastDataZeitVon:DataString];
-			NSLog(@"DataVonHeute lastDataZeit: %d",lastDataZeit);
+			//NSLog(@"DataVonHeute lastDataZeit: %d",lastDataZeit);
 			
 			// Auf WindowController Timer auslösen
 			downloadFlag=heute;
@@ -410,7 +410,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			{
 				DataString=[DataString substringFromIndex:1];
 			}
-			//NSLog(@"DataString: %@",DataString);
+			NSLog(@"DataVon DataString: %@",DataString);
 			lastDataZeit=[self lastDataZeitVon:DataString];
 			//NSLog(@"downloadDidFinish lastDataZeit: %d",lastDataZeit);
 			//NSLog(@"downloadDidFinish downloadFlag: %d",downloadFlag);
@@ -556,7 +556,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		}
 		
 		NSString* lastDatumString = [lastTimeString substringFromIndex:7];
-		//NSLog(@"lastData: lastDatumString: %@",lastDatumString);
+		NSLog(@"lastData: lastDatumString: %@",lastDatumString);
 		[NotificationDic setObject:lastDatumString forKey:@"lasttimestring"];
 		
 				
@@ -597,7 +597,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			{
 				DataString=[DataString substringFromIndex:1];
 			}
-			//NSLog(@"DataString: %@", DataString);
+			//NSLog(@"LastData DataString: %@", DataString);
          
          
 			NSMutableArray* tempDataArray = (NSMutableArray*)[DataString componentsSeparatedByString:@"\t"];
@@ -653,6 +653,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			
 			lastDataZeit=[self lastDataZeitVon:DataString];
 			//NSLog(@"lastDataZeit: %d",lastDataZeit);
+         NSLog(@"LastData DataString: %@", DataString);
 			[NotificationDic setObject:[NSNumber numberWithInt:downloadFlag] forKey:@"downloadflag"];
 			[NotificationDic setObject:[NSNumber numberWithInt:lastDataZeit] forKey:@"lastdatazeit"];
 			[NotificationDic setObject:DataString forKey:@"datastring"];

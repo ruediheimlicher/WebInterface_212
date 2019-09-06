@@ -528,9 +528,6 @@ void mountVolumeAppleScript (NSString *usr, NSString *pwd, NSString *serv, NSStr
 - (void)awakeFromNib
 {
    NSNotificationCenter * nc =[NSNotificationCenter defaultCenter];
-
-   
-   
 	//NSLog(@"AVR awake");
    char* u="80+f+0+0+7+f0+ff+ff";
    
