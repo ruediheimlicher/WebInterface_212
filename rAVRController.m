@@ -343,7 +343,7 @@ NSLog(@"lastDataRead: %@",lastDataRead);
 	/*
 	 Aufgerufen, wenn der Tab von SolarStatistik geoeffnet wird
 	 */
-	//NSLog(@"AVRController SolarStatistikDatenAktion");
+	NSLog(@"AVRController SolarStatistikDatenAktion");
 	NSLog(@"AVRController SolarStatistikDatenAktion note *** aktion: %d ",[[[note userInfo]objectForKey:@"aktion" ]intValue]);
 	if ([[note userInfo]objectForKey:@"aktion"])
 	{

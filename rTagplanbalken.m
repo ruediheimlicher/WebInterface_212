@@ -379,7 +379,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	[NotificationDic setObject:[NSNumber numberWithInt:objekt] forKey:@"objekt"];
 	int modKey=0;
 	int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"AllTasteAktion Alt");
 		modKey=2;
@@ -493,7 +493,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	//NSLog(@"StundentastenAktion start lastONArray: %@",[lastONArray description]);
 	int modKey=0;
 	int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		NSLog(@"StundenTasteAktion Alt");
 		modKey=2;
@@ -591,7 +591,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 	NSLog(@"Tagplanbalken WriteTasteAktion tagbalkentyp: %d ",TagbalkenTyp);
 	int modKey=0;
 	//int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"WriteTasteAktion Alt-Taste");
 		modKey=2;
@@ -640,7 +640,7 @@ NSMutableDictionary* tempDic=(NSMutableDictionary*)[StundenArray objectAtIndex:d
 
    int modKey=0;
 	//int all=-1;
-	if(([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)  != 0)
+   if(([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption)  != 0)
 	{
 		//NSLog(@"WriteTasteAktion Alt-Taste");
 		modKey=2;
@@ -916,18 +916,18 @@ return tag;
 	int MausIN=0;
 	unsigned int Mods=[theEvent modifierFlags];
 	int modKey=0;
-	if (Mods & NSCommandKeyMask)
+   if (Mods & NSEventModifierFlagCommand)
 	{
 		NSLog(@"mouseDown: Command");
 		modKey=1;
 	}
-	else if (Mods & NSControlKeyMask)
+   else if (Mods & NSEventModifierFlagControl)
 	{
 		NSLog(@"mouseDown: Control");
 		modKey=3;
 	}
 	
-	else if (Mods & NSAlternateKeyMask)
+   else if (Mods & NSEventModifierFlagOption)
 	{
 		NSLog(@"mouseDown: Alt");
 		modKey=2;

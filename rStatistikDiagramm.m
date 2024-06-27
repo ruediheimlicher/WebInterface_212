@@ -267,27 +267,7 @@
 		
 		[GraphKanalArray setArray:derKanalArray];
 
-		
-	continue;
-		
-		// 
-		int Monat;
-		int Jahr;
-		int TagDesJahres;
-		int TagDesMonats;
-		
-		if ([[derWerteArray objectAtIndex:i]objectForKey:@"calenderdatum"])
-		{
-			NSCalendarDate* aktDatum=[[derWerteArray objectAtIndex:i]objectForKey:@"calenderdatum"];
-	//		TagDesMonats = [aktDatum dayOfMonth];
-	//		Monat = [aktDatum monthOfYear];
-	//		Jahr = [aktDatum yearOfCommonEra];
-	//		TagDesJahres=[aktDatum dayOfYear];
-	//		NSLog(@"TagDesMonats: %d Monat: %d Jahr: %d TagDesJahres: %d",TagDesMonats, Monat, Jahr,TagDesJahres);
-		}// if datum
-		
-		continue;
-		
+				
 		
 	}// for i
 	// Kanal 0

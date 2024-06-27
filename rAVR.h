@@ -227,7 +227,7 @@ NSTimer*                EEPROMUpdateTimer;
 - (NSString*)IntToBin:(int)dieZahl;
 - (void)readAVRSlave:(int)i2cAdresse vonAdresse:(int)startAdresse anz:(int)anzDaten;
 - (IBAction)readAVRSlave:(id)sender;
-- (int)WriteWoche_busy;
+- (int)writeWoche_busy;
 
 - (IBAction)reportRaumPop:(id)sender;
 - (IBAction)reportObjektPop:(id)sender;

@@ -136,38 +136,85 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 		3: Monat
 		4: Jahr
 		*/
+ //     [GraphArray  removeAllObjects];
 		for (i=0;i<[derWerteArray count]-1;i++) // erster Wert ist Abszisse
 		{
 			if ([[derKanalArray objectAtIndex:i]intValue]) // der Kanal soll gezeigt werden
 			{
-				
-				
-				//NSLog(@"***			Gitterlinien setWerteArray:	tagdesjahres: %d",[[derWerteArray objectAtIndex:0]intValue]);
+      //      NSLog(@"***			Gitterlinien setWerteArray:	tagdesjahres: %d datum: %@",[[derWerteArray objectAtIndex:0]intValue],[derWerteArray objectAtIndex:1]);
 				NSPoint neuerPunkt=DiagrammEcke;
             
-				int TagDesJahres=[[derWerteArray objectAtIndex:0]intValue]; //tagdesjahres, Abszisse
+				
 				int Minute=0;
-				NSCalendarDate* Calenderdatum=(NSCalendarDate*)[derWerteArray objectAtIndex:1];
+		//		NSCalendarDate* Calenderdatum=(NSCalendarDate*)[derWerteArray objectAtIndex:1];
 				//int TagDesMonats=[Calenderdatum dayOfMonth];
 				//int TagDerWoche=[Calenderdatum dayOfWeek];
 				//int Monat=[Calenderdatum monthOfYear];
 				
+            
+            NSMutableArray* zeilendatumarray = (NSMutableArray* )[[derWerteArray objectAtIndex:1]componentsSeparatedByString:@"."];
+            
+            int tag = [[zeilendatumarray objectAtIndex:0]integerValue];
+            int monat = [[zeilendatumarray objectAtIndex:1]integerValue];
+            int jahr = [[zeilendatumarray objectAtIndex:2]integerValue] + 2000;
+             
+            // setting parameters for testing:
+            /*
+            tag = 1;
+            monat = 1;
+            jahr = 2020;
+            */
+            
+            // Calendar object: TimeZone is Europe/Zurich. 
             NSCalendar *tagcalendar = [[NSCalendar alloc]  initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-            tagcalendar.firstWeekday = 2;
-            NSDate * Kalenderdatum = [derWerteArray objectAtIndex:1];
-              NSDateComponents *components = [tagcalendar components:( NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ) fromDate:Kalenderdatum];
-            int TagDesMonats = (int)components.day;
-            int TagDerWoche = (int)components.weekday;
-            int Monat = (int)components.month;
-            //NSLog(@"TagDesMonats: %d TagDerWoche: %d Monat: %d",TagDesMonats,TagDerWoche,Monat);
-				
+            [tagcalendar setTimeZone:[NSTimeZone localTimeZone]];
+            [tagcalendar setLocale:[NSLocale currentLocale]];
+            
+            // Setting components with tag, monat and jahr from the measurement:
+            NSDateComponents *tagcomponents = [[NSDateComponents alloc] init];
+             tagcalendar.firstWeekday = 2;
+            [tagcomponents setDay:tag];
+            [tagcomponents setMonth:monat];
+            [tagcomponents setYear:jahr];
+            
+            // Getting the Date:
+            NSDate *tagdatum = [tagcalendar dateFromComponents:tagcomponents];
+ 
+            // Getting day:
+            NSDateComponents *weekdayComponents = [tagcalendar components:(NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitMonth) fromDate:tagdatum];
+            NSInteger Tag = [weekdayComponents day];
+            
+            // Getting weekday:
+            NSUInteger TagDerWoche = [tagcalendar ordinalityOfUnit:NSCalendarUnitWeekday inUnit:NSCalendarUnitWeekOfYear forDate:tagdatum];
+            
+            // Getting day of year:
+            NSUInteger TagDesJahres = [tagcalendar ordinalityOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitYear forDate:tagdatum];
+ 
+            //NSLog(@"tagdatum: %@ Tag: %d TagDerWoche: %d TagDesJahres: %d",tagdatum,Tag,TagDerWoche,TagDesJahres);
+            
+            // control:
+            NSString* zeitzone = [[tagcalendar timeZone]abbreviation];
+            NSString* lokal = [[tagcalendar locale]countryCode];
+          
+            //NSLog(@"zeitzone: %@ lokal: %@",zeitzone, lokal); 
+            
+            // NSInteger Wochentag = [weekdayComponents weekday]; // gibt immer Wert mit Sonntag = 1
+            // https://stackoverflow.com/questions/16875420/nscalendar-why-does-setting-the-firstweekday-doesnt-effect-calculation-outcome
+           
+            NSInteger Monat = [weekdayComponents month];
+   //        int TagDesMonats  = [[zeilendatumarray objectAtIndex:1]intValue];
+            
+            NSString* zeilendatumstring = [zeilendatumarray componentsJoinedByString:  @"."];
+             
+  
             
             int Art=0;	// Linie fuer Intervall
 				LinieOK=0;
-											neuerPunkt.x=([[derWerteArray objectAtIndex:0]floatValue]-StartwertX)*ZeitKompression+0.1;	//	aktueller Tag, x-Wert, erster Wert im Array
-
+            neuerPunkt.x=([[derWerteArray objectAtIndex:0]floatValue]-StartwertX)*ZeitKompression+0.1;	//	aktueller Tag, x-Wert, erster Wert im Array
+            int TagDesMonats = Tag;
+//				TagDesJahres=[[derWerteArray objectAtIndex:0]intValue]; //tagdesjahres, Abszisse
 				
-				if (Intervall < 60)
+            if (Intervall < 60)
 				{
 					if (TagDesJahres % Intervall==0) // Rest ist null
 					{	
@@ -178,9 +225,9 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 							// GraphArray	Array mit Dics fuer die senkrechten Zeitlinien
 							
 							//NSLog(@"Gitterlinien neuerPunkt %d raw: %2.2f x: %2.2f",i,[[derWerteArray objectAtIndex:0]floatValue],neuerPunkt.x);							
-							NSString* TagString=[NSString stringWithFormat:@"%d",TagDesMonats];
+                     NSString* TagString=[NSString stringWithFormat:@"%ld",(long)Tag];
 							Art=0;
-							if (TagDerWoche==0) // Montag
+							if (TagDerWoche==1) // Montag
 							{
 								Art = 1; // Taglinie
 							}
@@ -195,8 +242,6 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 							[tempLinienDic setObject:TagString forKey:@"tagstring"];
 							//NSMutableDictionary* tempLinienDic=[NSMutableDictionary dictionaryWithObjects:tempDatenArray forKeys:[NSArray arrayWithObjects:@"start",@"x",@"y",nil]];
 							//NSLog(@"Gitterlinien tempLinienDic: %@",[tempLinienDic description]);				
-							
-							
 							
 							
 							[GraphArray addObject:tempLinienDic];
@@ -443,7 +488,7 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
  	NSMutableDictionary* ZeitAttrs=[[NSMutableDictionary alloc]initWithCapacity:0];
 	
  	NSMutableParagraphStyle* ZeitPar=[[NSMutableParagraphStyle alloc]init];
-	[ZeitPar setAlignment:NSRightTextAlignment];
+	[ZeitPar setAlignment:NSTextAlignmentRight];
 	[ZeitAttrs setObject:ZeitPar forKey:NSParagraphStyleAttributeName];
 	NSFont* ZeitFont=[NSFont fontWithName:@"Helvetica" size: 9];
 	
@@ -525,7 +570,7 @@ NSLog(@"TagGitterlinien setEinheitenDicY: Intervall: %d  ",Intervall );
 				//NSLog(@"Gitterlinien i: %d Art: %d",i,art);
 				if (art==1)
 				{
-					NSLog(@"Gitterlinien drucken %d %d ",i,art);
+					//NSLog(@"Gitterlinien drucken %d %d ",i,art);
 					[[NSColor lightGrayColor]set];
 					[SenkrechteLinie moveToPoint:TaguntenV];
 					[SenkrechteLinie lineToPoint:TagobenV];

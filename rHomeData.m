@@ -323,9 +323,16 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 				//NSLog(@"DataVonHeute: String korrigieren");
 				DataString=[DataString substringFromIndex:1];
 			}
+         
+         
+         
 			//NSLog(@"DataVonHeute DataString: \n%@",DataString);
 			lastDataZeit=[self lastDataZeitVon:DataString];
 			//NSLog(@"DataVonHeute lastDataZeit: %d",lastDataZeit);
+         
+         
+ 
+         
 			
 			// Auf WindowController Timer auslösen
 			downloadFlag=heute;
@@ -556,7 +563,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 		}
 		
 		NSString* lastDatumString = [lastTimeString substringFromIndex:7];
-		NSLog(@"lastData: lastDatumString: %@",lastDatumString);
+	//	NSLog(@"lastData: lastDatumString: %@",lastDatumString);
 		[NotificationDic setObject:lastDatumString forKey:@"lasttimestring"];
 		
 				
@@ -601,8 +608,18 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
          
          
 			NSMutableArray* tempDataArray = (NSMutableArray*)[DataString componentsSeparatedByString:@"\t"];
-			//NSLog(@"lastData tempDataArray: %@",[tempDataArray description]);
-			
+  //       NSLog(@"LastData tempDataArray vor: %@", tempDataArray);
+	//		NSLog(@"lastData tempDataArray 9: %d",[[tempDataArray objectAtIndex:9 ]intValue]);
+         int wert9 = [[tempDataArray objectAtIndex:9 ]intValue];
+         [tempDataArray replaceObjectAtIndex:9 withObject:[NSNumber numberWithInt:wert9/2]];
+         int wert10 = [[tempDataArray objectAtIndex:10 ]intValue];
+         [tempDataArray replaceObjectAtIndex:10 withObject:[NSNumber numberWithInt:wert10/2]];
+         int wert11 = [[tempDataArray objectAtIndex:11 ]intValue];
+         [tempDataArray replaceObjectAtIndex:11 withObject:[NSNumber numberWithInt:wert11/2]];
+          
+         DataString = [tempDataArray  componentsJoinedByString:@"\t"];
+          
+ //        NSLog(@"LastData tempDataArray nach: %@", tempDataArray);
 			NSArray* prevDataArray = [prevDataString componentsSeparatedByString:@"\t"];
          uint8_t checksum = 0;
          for (int i=0;i<[prevDataArray count];i++)
@@ -653,7 +670,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			
 			lastDataZeit=[self lastDataZeitVon:DataString];
 			//NSLog(@"lastDataZeit: %d",lastDataZeit);
-         NSLog(@"LastData DataString: %@", DataString);
+   //      NSLog(@"LastData DataString: %@", DataString);
 			[NotificationDic setObject:[NSNumber numberWithInt:downloadFlag] forKey:@"downloadflag"];
 			[NotificationDic setObject:[NSNumber numberWithInt:lastDataZeit] forKey:@"lastdatazeit"];
 			[NotificationDic setObject:DataString forKey:@"datastring"];
@@ -1836,14 +1853,14 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 - (NSArray*)BrennerStatistikVonJahr:(int)dasJahr Monat:(int)derMonat
 {
 	NSMutableArray* BrennerdatenArray=[[NSMutableArray alloc]initWithCapacity:0];
-	//NSLog(@"BrennerStatistikVon: %d",dasJahr);
+	NSLog(@"BrennerStatistikVon: %d",dasJahr);
 	DataSuffix=@"Brennerzeit.txt";
 	//NSString* URLPfad=[NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:DataSuffix]];
 	//NSLog(@"BrennerStatistikVon URLPfad: %@",URLPfad);
 	//NSLog(@"BrennerStatistikVon  DownloadPfad: %@ DataSuffix: %@",DownloadPfad,DataSuffix);
 	NSURL *URL = [NSURL URLWithString:[ServerPfad stringByAppendingPathComponent:DataSuffix]];
 
-	//NSLog(@"BrennerStatistikVon URL: %@",URL);
+	NSLog(@"BrennerStatistikVon URL: %@",URL);
 	
 	NSStringEncoding *  enc=0;
 	NSCharacterSet* CharOK=[NSCharacterSet alphanumericCharacterSet];
@@ -1871,33 +1888,61 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			NSMutableDictionary* tempDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 			
 			NSArray* tempDatenArray = [eineZeile componentsSeparatedByString:@"\t"];
-			int n=[tempDatenArray count];
+			NSInteger n=[tempDatenArray count];
 			//NSLog(@"tempDatenArray: %@, n %d",[tempDatenArray description], n);
 			// calendarFormat:@"%d, %m %y"];
 			
-			if (n==3)
+			if (n==3) // Daten vorhanden
 			{
             
-				NSCalendarDate* Datum=[NSCalendarDate dateWithString:[tempDatenArray objectAtIndex:0] calendarFormat:@"%d.%m.%y"];
-				int TagDesJahres = [Datum dayOfYear];
-				int Jahr=[Datum yearOfCommonEra];
-				int Monat=[Datum monthOfYear];
+			//	NSCalendarDate* Datum=[NSCalendarDate dateWithString:[tempDatenArray objectAtIndex:0] calendarFormat:@"%d.%m.%y"];
+				// [0]   "13.12.09"  
+            
+            NSArray* DatumArray= [[tempDatenArray objectAtIndex:0]componentsSeparatedByString:@"."];
+             NSDateComponents* dateComponents = [[NSDateComponents alloc] init];
+            int tagdesmonats = [[DatumArray objectAtIndex:0]intValue];
+           // NSLog(@"DatumArray 0: %d tagdesmonats %d",DatumArray[0], tagdesmonats);
+            dateComponents.day = tagdesmonats;
+           // NSLog(@"dateComponents.day: %ld",(long)dateComponents.day);
+            
+            dateComponents.month = (long)[[DatumArray objectAtIndex:1] intValue];
+           // NSLog(@"dateComponents.month: %ld",(long)dateComponents.month);
+            dateComponents.year = (long)[[DatumArray objectAtIndex:2]intValue];
+            //NSLog(@"dateComponents.year: %ld",(long)dateComponents.year);
+            /*
+            if ((dateComponents.year > 19) && (dateComponents.month > 5))
+            {
+            //   NSLog(@"dateComponents.month: %ld",(long)dateComponents.month);
+               NSLog(@"dateComponents.year: %ld",(long)dateComponents.year);
+               NSLog(@"Kein Brenner mehr");
+               continue;
+            }
+             */
+          //  NSDate* Datum = [NSDate dateFromComponents:dateComponents];
+            NSCalendar* Kalender = [NSCalendar currentCalendar];
+            NSDate* Datum  = [Kalender dateFromComponents:dateComponents];
+            NSRange dayrange = [Kalender rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:Datum];
+            NSInteger TagDesJahres = dayrange.length;
+            
+				int Jahr=(NSInteger)[DatumArray objectAtIndex:2];
+            int Monat=(NSInteger)[DatumArray objectAtIndex:1];
+        //    NSLog(@"Jahr: %d dasJahr: %d Monat: %d derMonat: %d",Jahr, dasJahr, Monat,derMonat);
 				if ((Jahr == dasJahr)&& ((derMonat==0)||(Monat==derMonat)))
-				{
-				//NSLog(@"Datum: %@, TagDesJahres: %d",[Datum description],TagDesJahres);
-				[tempDic setObject:[NSNumber numberWithInt:TagDesJahres] forKey:@"tagdesjahres"];
-				[tempDic setObject:Datum forKey:@"calenderdatum"];
-				[tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"datum"];
-				NSArray* laufzeitArray=[[tempDatenArray objectAtIndex:1]componentsSeparatedByString:@" "];
-				[tempDic setObject:[laufzeitArray lastObject] forKey:@"laufzeit"];
-				NSArray* zeitArray=[[tempDatenArray objectAtIndex:2]componentsSeparatedByString:@" "];
-				
-				[tempDic setObject:[zeitArray lastObject] forKey:@"einschaltdauer"];
-				
-				//[tempDic setObject:[tempDatenArray objectAtIndex:1] forKey:@"laufzeit"];
-
-				[BrennerdatenArray addObject:tempDic];
-				}
+            {
+   //            NSLog(@"Datum: %@, TagDesJahres: %d",[Datum description],TagDesJahres);
+               [tempDic setObject:[NSNumber numberWithInt:TagDesJahres] forKey:@"tagdesjahres"];
+               [tempDic setObject:[NSNumber numberWithInt:TagDesJahres] forKey:@"calenderdatum"];
+               [tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"datum"];
+               NSArray* laufzeitArray=[[tempDatenArray objectAtIndex:1]componentsSeparatedByString:@" "];
+               [tempDic setObject:[laufzeitArray lastObject] forKey:@"laufzeit"];
+               NSArray* zeitArray=[[tempDatenArray objectAtIndex:2]componentsSeparatedByString:@" "];
+               
+               [tempDic setObject:[zeitArray lastObject] forKey:@"einschaltdauer"];
+               
+               //[tempDic setObject:[tempDatenArray objectAtIndex:1] forKey:@"laufzeit"];
+               
+               [BrennerdatenArray addObject:tempDic];
+            }
 			}
 		}//while
 		
@@ -1953,15 +1998,23 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			//NSLog(@"tempDatenArray: %@, n %d",[tempDatenArray description], n);
 			if (n==4)
 			{
+            /*
 				NSCalendarDate* Datum=[NSCalendarDate dateWithString:[tempDatenArray objectAtIndex:0] calendarFormat:@"%d.%m.%y"];
 				int TagDesJahres = [Datum dayOfYear];
 				int Jahr=[Datum yearOfCommonEra];
 				int Monat=[Datum monthOfYear];
+            */
+            NSArray* DatumArray = [[tempDatenArray objectAtIndex:0]componentsSeparatedByString:@"."];
+            int Jahr  = [[DatumArray objectAtIndex:2]integerValue] + 2000;
+            int Monat = [[DatumArray objectAtIndex:1]integerValue];
+            int Tag = [[DatumArray objectAtIndex:0]integerValue];
+            int TagDesJahres = [self tagdesjahresvonJahr:Jahr Monat:Monat Tag:Tag];
+            
 				if ((Jahr == dasJahr)&& ((derMonat==0)||(Monat==derMonat)))
 				{
-				//NSLog(@"Datum: %@, TagDesJahres: %d Monat: %d Jahr: %d",[Datum description],TagDesJahres,Monat, Jahr);
+	//			NSLog(@"Datum: %@, TagDesJahres: %d Monat: %d Jahr: %d",[tempDatenArray objectAtIndex:0],TagDesJahres,Monat, Jahr);
 				[tempDic setObject:[NSNumber numberWithInt:TagDesJahres] forKey:@"tagdesjahres"];
-				[tempDic setObject:Datum forKey:@"calenderdatum"];
+				[tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"calenderdatum"];
 				[tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"datum"];
 				
 				NSArray* mittelArray=[[tempDatenArray objectAtIndex:1]componentsSeparatedByString:@" "];
@@ -2025,15 +2078,25 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 			
 			if (n==3)
 			{
+            /*
 				NSCalendarDate* Datum=[NSCalendarDate dateWithString:[tempDatenArray objectAtIndex:0] calendarFormat:@"%d.%m.%y"];
 				int TagDesJahres = [Datum dayOfYear];
 				int Jahr=[Datum yearOfCommonEra];
 				int Monat=[Datum monthOfYear];
-				if ((Jahr == dasJahr)&& ((derMonat==0)||(Monat==derMonat)))
+	*/
+            NSArray* DatumArray = [[tempDatenArray objectAtIndex:0]componentsSeparatedByString:@"."];
+            int Jahr = [[DatumArray objectAtIndex:2]integerValue];
+            int Monat = [[DatumArray objectAtIndex:1]integerValue];
+            int Tag = [[DatumArray objectAtIndex:0]integerValue];
+            int TagDesJahres = [self tagdesjahresvonJahr:Jahr Monat:Monat Tag:Tag];
+      
+            
+            
+            if ((Jahr == dasJahr)&& ((derMonat==0)||(Monat==derMonat)))
 				{
                //NSLog(@" ElektroStatistikVonJahr Datum: %@, TagDesJahres: %d",[Datum description],TagDesJahres);
                [tempDic setObject:[NSNumber numberWithInt:TagDesJahres] forKey:@"tagdesjahres"];
-               [tempDic setObject:Datum forKey:@"calenderdatum"];
+               [tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"calenderdatum"];
                [tempDic setObject:[tempDatenArray objectAtIndex:0] forKey:@"datum"];
                NSArray* laufzeitArray=[[tempDatenArray objectAtIndex:1]componentsSeparatedByString:@" "];
                
@@ -2414,7 +2477,7 @@ tempURLString= [tempURLString stringByAppendingString:@".txt"];
 
 - (void)savePanelDidEnd:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
 {    
-    if (returnCode == NSOKButton)
+   if (returnCode == NSModalResponseOK)
     {
        [download setDestination:[[sheet URL] absoluteString] allowOverwrite:YES];
     } else

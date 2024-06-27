@@ -1431,7 +1431,7 @@ if (Webserver_busy)
             NSString* s2=@"";
             NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
             [Warnung setInformativeText:InformationString];
-            [Warnung setAlertStyle:NSWarningAlertStyle];
+            [Warnung setAlertStyle:NSAlertStyleWarning];
             
             int antwort=0;
             //antwort=[Warnung runModal];
@@ -1490,7 +1490,7 @@ if (Webserver_busy)
 		NSString* s2=@"Quelle: WriteModifierAktion";
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+		[Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		int antwort=[Warnung runModal];
 		
@@ -1921,7 +1921,7 @@ if (Webserver_busy)
       NSString* s2=@"";
       NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
       [Warnung setInformativeText:InformationString];
-      [Warnung setAlertStyle:NSWarningAlertStyle];
+      [Warnung setAlertStyle:NSAlertStyleWarning];
       int antwort=0;
       //antwort=[Warnung runModal];
       switch (antwort)
@@ -2152,7 +2152,7 @@ if (Webserver_busy)
           NSString* s2=@"Quelle: Fixtaste";
           NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
           [Warnung setInformativeText:InformationString];
-          [Warnung setAlertStyle:NSWarningAlertStyle];
+          [Warnung setAlertStyle:NSAlertStyleWarning];
           
           int antwort=[Warnung runModal];
           return;
@@ -2161,7 +2161,7 @@ if (Webserver_busy)
          
          //
          
-         [UpdateWaitrad startAnimation:NULL];
+ //        [UpdateWaitrad startAnimation:NULL];
          [self updateEEPROMMitDicArray:HomeServerFixArray];
          
          /*
@@ -2853,7 +2853,7 @@ if (Webserver_busy)
       int anz = [[[note userInfo]objectForKey:@"anzahl"]intValue];
       if (anz == 77) // timeout
       {
-         [Waitrad stopAnimation:NULL];
+  //       [Waitrad stopAnimation:NULL];
       }
    }
 
@@ -2887,7 +2887,7 @@ didCommitLoadForFrame:(WebFrame *)frame
 	NSString* s2=@"";
 	NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 	[Warnung setInformativeText:InformationString];
-	[Warnung setAlertStyle:NSWarningAlertStyle];
+	[Warnung setAlertStyle:NSAlertStyleWarning];
 	
 	int antwort=[Warnung runModal];
    
@@ -2937,7 +2937,7 @@ didCommitLoadForFrame:(WebFrame *)frame
 		NSString* s2=@"";
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+		[Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		//	int antwort=[Warnung runModal];
 		
@@ -2967,7 +2967,7 @@ didCommitLoadForFrame:(WebFrame *)frame
 	[WEBDATATable reloadData];
 }
 
-- (int)WriteWoche_busy
+- (int)writeWoche_busy
 {
 return WriteWoche_busy;
 }
@@ -2982,5 +2982,6 @@ return WriteWoche_busy;
    printf("\n");
    
 }
+
 
 @end

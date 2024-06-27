@@ -576,9 +576,9 @@ void IOWarriorCallback ()
       
       [self setStatistikDaten];
       
-      NSString* IP_String = [HomeData Router_IP];
-      
-      [Data setRouter_IP:IP_String];
+    //NSString* IP_String = [HomeData Router_IP];
+      NSString* IP_String  = @"178.196.111.53";
+     [Data setRouter_IP:IP_String];
    }
    else
    {
@@ -909,7 +909,7 @@ HomeDataDownload
    //NSLog(@"HomeDataDownloadAktion userInfo: *%@*",[[note userInfo] objectForKey:@"lastdatazeit" ]);
 	
 	
-	if ([AVR WriteWoche_busy]) // Woche wird noch geschrieben
+	if ([AVR writeWoche_busy]) // Woche wird noch geschrieben
 	{
 		return;
 	}
@@ -927,7 +927,7 @@ HomeDataDownload
 	}
 		
 	//NSLog(@"HomeDataDownloadAktion flag: %d\n DataString: \n%@",flag, DataString);
-	NSLog(@"HomeDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
+//	NSLog(@"HomeDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
    
    // enum downloadflag{downloadpause, heute, last, datum}downloadFlag;
 	
@@ -949,7 +949,7 @@ HomeDataDownload
 			if ([DataString length])
 			{
 				// 12.08.09 [self openWithString:DataString];// im Aufruf von DataVonHeute ausgelšst
-				
+				NSString* AktuelleDaten=[HomeData LastData];
 				if (![DownloadTimer isValid])
 				{
 					DownloadTimer=[NSTimer scheduledTimerWithTimeInterval:12
@@ -1049,7 +1049,7 @@ HomeDataDownload
 - (void)DownloadFunktion:(NSTimer*)derTimer
 {
 	//NSLog(@"DownloadTimer DownloadFunktion");
-	
+   
 	NSString* AktuelleDaten=[HomeData LastData];
 	if (AktuelleDaten == NULL)
 	{
@@ -1332,6 +1332,7 @@ NSLog(@"IOWarr WindowController reportPrint");
                
                NSMutableArray* tempDatenArray=[[NSMutableArray alloc]initWithCapacity:0];
                tempDatenArray = [NSMutableArray arrayWithArray: [[rohDatenArray objectAtIndex:i] componentsSeparatedByString:@"\t"]];
+               
                while ([tempDatenArray count]<9)
                {
                   [tempDatenArray addObject: [NSNumber numberWithInt:0]];
@@ -1417,7 +1418,7 @@ SolarDataDownload
 */
 	//NSLog(@"SolarDataDownloadAktion: %@",[note userInfo]);
 	
-	if ([AVR WriteWoche_busy]) // Woche wird noch geschrieben
+	if ([AVR writeWoche_busy]) // Woche wird noch geschrieben
 	{
 		return;
 	}
@@ -1435,7 +1436,7 @@ SolarDataDownload
 	}
 		
 	//NSLog(@"SolarDataDownloadAktion flag: %d\n DataString: \n%@",flag, DataString);
-	NSLog(@"SolarDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
+//	NSLog(@"SolarDataDownloadAktion flag: %d length: %d",flag,[DataString length]);
 
 	switch (flag)
 	{
@@ -1635,7 +1636,7 @@ return;
 			
 			
 			NSArray* tempDatumArray= [DatumString componentsSeparatedByString:@" "];
-			NSLog(@"openWithSolarString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
+	//		NSLog(@"openWithSolarString tempDatumArray: %@ count: %d",[tempDatumArray description], [tempDatumArray count]);
 			
 			switch ([tempDatumArray count])
 			{

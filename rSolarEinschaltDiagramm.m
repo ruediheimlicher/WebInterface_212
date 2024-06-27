@@ -107,7 +107,7 @@
 				case ElektroIndex:
 				{
 					int ElektroON = DatenWert;
-					ElektroON &= 0x10;	// Bit 4: 1: Elektro ON
+					ElektroON &= 0x20;	// Bit 4: 1: Elektro ON
 					//NSLog(@" Datenwert: %d ElektroON: %d ",DatenWert, ElektroON);
 					ElektroON>>=4;
 					aktuellerWert=ElektroON;

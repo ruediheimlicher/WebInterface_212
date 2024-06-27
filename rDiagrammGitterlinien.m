@@ -467,7 +467,7 @@
  	NSMutableDictionary* ZeitAttrs=[[NSMutableDictionary alloc]initWithCapacity:0];
 	
  	NSMutableParagraphStyle* ZeitPar=[[NSMutableParagraphStyle alloc]init];
-	[ZeitPar setAlignment:NSCenterTextAlignment];
+	[ZeitPar setAlignment:NSTextAlignmentCenter];
 	[ZeitAttrs setObject:ZeitPar forKey:NSParagraphStyleAttributeName];
 	NSFont* ZeitFont=[NSFont fontWithName:@"Helvetica" size: 9];
 	

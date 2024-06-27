@@ -213,7 +213,7 @@ IBOutlet id							SolaranlageBild;
 // SolarStatistikTab
 IBOutlet id                   SolarStatistikDiagrammFeld;
 IBOutlet	NSScrollView*                   SolarStatistikDiagrammScroller;
-IBOutlet	id                   SolarStatistikJahrPop;
+IBOutlet	NSPopUpButton *                  SolarStatistikJahrPop;
 IBOutlet	id                   SolarStatistikMonatPop;
 IBOutlet	id                   SolarStatistikTagPop;
 IBOutlet	id                   SolarStatistikKalender;
@@ -272,7 +272,7 @@ rTagGitterlinien*             SolarStatistikTagGitterlinien;
 - (NSDate*)DatenserieStartZeit;
 - (NSString*)DatumSuffixVonDate:(NSDate*)dasDatum;
 - (void)setKalenderBlocker:(int)derStatus;
-- (NSString*)DruckDatenString;
+//- (NSString*)DruckDatenString;
 - (void)clearData;
 - (BOOL)saveErrString;
 - (void)setZeitKompression;

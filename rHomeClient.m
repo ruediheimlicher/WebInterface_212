@@ -614,7 +614,7 @@ unsigned char h2int(char c)
 			NSString* s2=@"";
 			NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 			[Warnung setInformativeText:InformationString];
-			[Warnung setAlertStyle:NSWarningAlertStyle];
+			[Warnung setAlertStyle:NSAlertStyleWarning];
 			
 			int antwort=[Warnung runModal];
 			switch (antwort)
@@ -2254,7 +2254,7 @@ unsigned char h2int(char c)
 	//NSLog(@"sender: %@",[sender description]);
 	// Only report feedback for the main frame.
 	NSString* HTML_Inhalt=[self dataRepresentationOfType:HTMLDocumentType];
-	NSLog(@"didFinishLoadForFrame Antwort: \nHTML_Inhalt: \t%@\n",HTML_Inhalt);
+	//NSLog(@"didFinishLoadForFrame Antwort: \nHTML_Inhalt: \t%@\n",HTML_Inhalt);
 	loadAlertOK=1;
 	NSRange CheckRange;
 	NSString* Code_String= @"okcode=";
@@ -2744,7 +2744,7 @@ unsigned char h2int(char c)
 		
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+		[Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		int antwort=[Warnung runModal];
 		
@@ -2780,7 +2780,7 @@ unsigned char h2int(char c)
 		NSString* s2=@"Ort: HomeClient";
 		NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
 		[Warnung setInformativeText:InformationString];
-		[Warnung setAlertStyle:NSWarningAlertStyle];
+		[Warnung setAlertStyle:NSAlertStyleWarning];
 		
 		int antwort=[Warnung runModal];
 		

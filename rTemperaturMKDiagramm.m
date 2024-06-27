@@ -15,10 +15,13 @@
     self = [super initWithFrame:frame];
     if (self) 
 	{
-		[DatenTitelArray replaceObjectAtIndex:0 withObject:@"V"]; // Vorlauf
-		[DatenTitelArray replaceObjectAtIndex:1 withObject:@"R"];
+		[DatenTitelArray replaceObjectAtIndex:0 withObject:@"HV"]; // Vorlauf
+		[DatenTitelArray replaceObjectAtIndex:1 withObject:@"HR"]; // Ruecklauf
 		[DatenTitelArray replaceObjectAtIndex:2 withObject:@"A"];
 		[DatenTitelArray replaceObjectAtIndex:7 withObject:@"I"];
+      
+      [DatenTitelArray replaceObjectAtIndex:8 withObject:@"SV"]; // Sole Vorlauf
+      [DatenTitelArray replaceObjectAtIndex:9 withObject:@"SR"]; // Sole Ruecklauf
 
         // Initialization code here.
     }
@@ -63,7 +66,8 @@
     34
     )
     */
-	//NSLog(@"setWerteArray WerteArray: %@",[derWerteArray description]);//,[derKanalArray description]);
+   //NSLog(@"Temp MKDiagramm setWerteArray WerteArray: %@ KanalArray: %@",[derWerteArray description],[derKanalArray description]);
+   //NSLog(@"TempMKDiagramm setWerteArray KanalArray count: %d",[derKanalArray count]);
 	int i;
 	
 	float	maxSortenwert=127.5;	// Temperatur, 100° entspricht 200
@@ -77,62 +81,67 @@
 	for (i=0;i<[derWerteArray count]-1;i++) // erster Wert ist Abszisse
    //for (i=0;i<8;i++) // erster Wert ist Abszisse // nur erste 9 Werte für Homediagramm
       {
-		if ([derKanalArray objectAtIndex:i] && ([[derKanalArray objectAtIndex:i]intValue]))
-		{
-			//NSLog(@"+++			Temperatur  setWerteArray: Kanal: %d	x: %2.2f",i,[[derWerteArray objectAtIndex:0]floatValue]);
-			NSPoint neuerPunkt=DiagrammEcke;
-			
+		if ((i<[derKanalArray count]-1) && [derKanalArray objectAtIndex:i] && ([[derKanalArray objectAtIndex:i]intValue]))
+      {
+         //NSLog(@"+++			Temperatur  setWerteArray: Kanal: %d	x: %2.2f",i,[[derWerteArray objectAtIndex:0]floatValue]);
+         NSPoint neuerPunkt=DiagrammEcke;
+         
          neuerPunkt.x += [[derWerteArray objectAtIndex:0]floatValue]*ZeitKompression;	//	Zeit, x-Wert, erster Wert im WerteArray
-			
+         
          float InputZahl=[[derWerteArray objectAtIndex:i+1]floatValue];	// Input vom IOW, 0-255
-			
-			// Korrektur bei i=2: Aussentemperatur um 16 reduzieren
-			if (i==2)
-			{
-				InputZahl -= 32;
+         
+         // Korrektur bei i=2: Aussentemperatur um 16 reduzieren
+         if (i==2)
+         {
+            InputZahl -= 32;
             
-			}
-			if (i==6)
-			{
+         }
+         if (i==6)
+         {
             //NSLog(@"setWerteArray: Kanal: %d InputZahl: %2.2F",i,InputZahl);
             //		InputZahl=80;
-			}
-			
-			float graphZahl=(InputZahl-2*MinY)*FaktorY;								// Red auf reale Diagrammhoehe
-			
-			float rawWert=graphZahl*SortenFaktor;							// Wert fuer Anzeige des ganzen Bereichs
-			
-			float DiagrammWert=(rawWert)*AnzeigeFaktor;
-			//NSLog(@"setWerteArray: Kanal: %d InputZahl: %2.2F graphZahl: %2.2F rawWert: %2.2F DiagrammWert: %2.2F",i,InputZahl,graphZahl,rawWert,DiagrammWert);
+         }
          
-			neuerPunkt.y += DiagrammWert;
-			//neuerPunkt.y=InputZahl;
-			//NSLog(@"setWerteArray: Kanal: %d MinY: %2.2F FaktorY: %2.2f",i,MinY, FaktorY);
+         float graphZahl=(InputZahl-2*MinY)*FaktorY;								// Red auf reale Diagrammhoehe
          
-			//NSLog(@"setWerteArray: Kanal: %d InputZahl: %2.2F FaktorY: %2.2f graphZahl: %2.2F rawWert: %2.2F DiagrammWert: %2.2F ",i,InputZahl,FaktorY, graphZahl,rawWert,DiagrammWert);
+         float rawWert=graphZahl*SortenFaktor;							// Wert fuer Anzeige des ganzen Bereichs
          
-			NSString* tempWertString=[NSString stringWithFormat:@"%2.1f",InputZahl/2.0];
-			//NSLog(@"neuerPunkt.y: %2.2f tempWertString: %@",neuerPunkt.y,tempWertString);
+         float DiagrammWert=(rawWert)*AnzeigeFaktor;
+         //NSLog(@"setWerteArray: Kanal: %d InputZahl: %2.2F graphZahl: %2.2F rawWert: %2.2F DiagrammWert: %2.2F",i,InputZahl,graphZahl,rawWert,DiagrammWert);
          
-			NSArray* tempDatenArray=[NSArray arrayWithObjects:[NSNumber numberWithFloat:neuerPunkt.x],[NSNumber numberWithFloat:neuerPunkt.y],tempWertString,nil];
-			NSDictionary* tempWerteDic=[NSDictionary dictionaryWithObjects:tempDatenArray forKeys:[NSArray arrayWithObjects:@"x",@"y",@"wert",nil]];
-			[[DatenArray objectAtIndex:i] addObject:tempWerteDic];
-			
-			NSBezierPath* neuerGraph=[NSBezierPath bezierPath];
-			if ([[GraphArray objectAtIndex:i]isEmpty]) // letzter Punkt ist leer, Anfang eines neuen Linienabschnitts
-			{
-				neuerPunkt.x=DiagrammEcke.x;
-				[neuerGraph moveToPoint:neuerPunkt];
-				[[GraphArray objectAtIndex:i]appendBezierPath:neuerGraph];
-				
-			}
-			else
-			{
-				[neuerGraph moveToPoint:[[GraphArray objectAtIndex:i]currentPoint]];//last Point
-				[neuerGraph lineToPoint:neuerPunkt];
-				[[GraphArray objectAtIndex:i]appendBezierPath:neuerGraph];
-			}
-		}// if Kanal
+         neuerPunkt.y += DiagrammWert;
+         //neuerPunkt.y=InputZahl;
+         //NSLog(@"setWerteArray: Kanal: %d MinY: %2.2F FaktorY: %2.2f",i,MinY, FaktorY);
+         
+         //NSLog(@"setWerteArray: Kanal: %d InputZahl: %2.2F FaktorY: %2.2f graphZahl: %2.2F rawWert: %2.2F DiagrammWert: %2.2F ",i,InputZahl,FaktorY, graphZahl,rawWert,DiagrammWert);
+         
+         NSString* tempWertString=[NSString stringWithFormat:@"%2.1f",InputZahl/2.0];
+         //NSLog(@"neuerPunkt.y: %2.2f tempWertString: %@",neuerPunkt.y,tempWertString);
+         
+         NSArray* tempDatenArray=[NSArray arrayWithObjects:[NSNumber numberWithFloat:neuerPunkt.x],[NSNumber numberWithFloat:neuerPunkt.y],tempWertString,nil];
+         NSDictionary* tempWerteDic=[NSDictionary dictionaryWithObjects:tempDatenArray forKeys:[NSArray arrayWithObjects:@"x",@"y",@"wert",nil]];
+         if (i < [DatenArray count])
+         {
+            [[DatenArray objectAtIndex:i] addObject:tempWerteDic];
+         }
+         NSBezierPath* neuerGraph=[NSBezierPath bezierPath];
+         if (i<[GraphArray count])
+         { 
+            if ([[GraphArray objectAtIndex:i]isEmpty]) // letzter Punkt ist leer, Anfang eines neuen Linienabschnitts
+            {
+               neuerPunkt.x=DiagrammEcke.x;
+               [neuerGraph moveToPoint:neuerPunkt];
+               [[GraphArray objectAtIndex:i]appendBezierPath:neuerGraph];
+               
+            }
+            else
+            {
+               [neuerGraph moveToPoint:[[GraphArray objectAtIndex:i]currentPoint]];//last Point
+               [neuerGraph lineToPoint:neuerPunkt];
+               [[GraphArray objectAtIndex:i]appendBezierPath:neuerGraph];
+            }
+         }
+      }// if Kanal
 	} // for i
 	[GraphKanalArray setArray:derKanalArray];
    //	[self setNeedsDisplay:YES];
@@ -146,8 +155,9 @@
 
 - (void)drawRect:(NSRect)rect
 {
-   
-	//NSLog(@"MKDiagramm drawRect");
+   NSLog(@"********************");
+	NSLog(@"MKDiagramm drawRect");
+   NSLog(@"********************");
 	NSRect NetzBoxRahmen=[self bounds];//NSMakeRect(NetzEcke.x,NetzEcke.y,200,100);
 	NetzBoxRahmen.size.height-=10;
 	NetzBoxRahmen.size.width-=15;
@@ -222,6 +232,19 @@
    
    rDatenlegende* DatenLegende = [[rDatenlegende alloc]init];
    
+   /*
+    interface rDatenlegende : NSObject
+    {
+       float randunten, randoben, abstandnach, abstandvor, mindistanz;
+       NSMutableArray* LegendeArray;
+    }
+    - (void)setVorgabenDic:(NSDictionary*)vorgabendic;
+    - (void)setLegendeArray:(NSArray*)array;
+    - (NSArray*)LegendeArray;
+
+    end
+
+    */
    
    // Datenanschrift ordnen
    
@@ -229,7 +252,7 @@
    NSMutableDictionary* ZeitAttrs=[[NSMutableDictionary alloc]initWithCapacity:0];
    NSMutableParagraphStyle* ZeitPar=[[NSMutableParagraphStyle alloc]init];
    
-   [ZeitPar setAlignment:NSRightTextAlignment];
+   [ZeitPar setAlignment:NSTextAlignmentRight];
 	[ZeitAttrs setObject:ZeitPar forKey:NSParagraphStyleAttributeName];
 	NSFont* ZeitFont=[NSFont fontWithName:@"Helvetica" size: schriftgroesse];
 	
@@ -246,12 +269,12 @@
    
    NSMutableArray* LegendeArray = [[NSMutableArray alloc]initWithCapacity:0];
    // Ordinaten nach Wert sortiert in IndexSet setzen
-   for (int i=0;i<8;i++)
+   
+   for (int i=0;i<12;i++)
    {
-      
-      if ([[GraphKanalArray objectAtIndex:i]intValue])
+       if ([[GraphKanalArray objectAtIndex:i]intValue]) // Kanal ist aktiv
 		{
-         
+         //aktuellen Punkt bestimmen, index: Nummerierung der vorhandenen Kanaele
          NSPoint cP=[[GraphArray objectAtIndex:i]currentPoint];
          NSDictionary* wertDic = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:cP.y],@"wert",
@@ -259,11 +282,16 @@
                                   nil];
          
          [LegendeArray addObject:wertDic];
+         
+         // Bereich bestimmen
          miny = fmin(miny,cP.y);
          maxy = fmax(maxy,cP.y);
       }
    }
-   //NSLog(@"miny: %.2f maxy: %.2f LegendeArray: %@",miny,maxy,[[LegendeArray valueForKey:@"wert"] description]);
+ //  NSLog(@"miny: %.2f maxy: %.2f LegendeArray: %@",miny,maxy,[[LegendeArray valueForKey:@"wert"] description]);
+   NSLog(@"miny: %.2f maxy: %.2f LegendeArray: %@",miny,maxy,[LegendeArray  description]);
+   
+   // Werte sind nicht geordnet nach index > sortieren nach wert: Reihenfolge in y-Richtung, Index ist zuteilung zu Grapharray
    
    NSComparator sortByNumber = ^(id dict1, id dict2)
    {
@@ -272,12 +300,14 @@
       return (NSComparisonResult)[n1 compare:n2];
    };
    [LegendeArray sortUsingComparator: sortByNumber];
-   //NSLog(@"LegendeArray vor: %@",[[LegendeArray valueForKey:@"wert"]description]);
-   [DatenLegende setLegendeArray:LegendeArray];
+   NSLog(@"LegendeArray nach sort wert: %@",[LegendeArray description]);
+   //NSLog(@"LegendeArray nach sort wert: %@",[[LegendeArray valueForKey:@"wert"]description]);
    
-   LegendeArray = (NSMutableArray*)[DatenLegende LegendeArray];
+   [DatenLegende setLegendeArray:LegendeArray]; // in Struktur einetzen
    
-   //NSLog(@"LegendeArray nach Datenlegende: %@",[LegendeArray description]);
+   LegendeArray = (NSMutableArray*)[DatenLegende LegendeArray];// vollstaendige LegendeArray zurueckholen
+   
+   NSLog(@"LegendeArray nach setLegendeArray: %@",[LegendeArray description]);
    
    NSComparator sortByIndex = ^(id dict1, id dict2)
    {
@@ -287,7 +317,8 @@
    };
    
    [LegendeArray sortUsingComparator: sortByIndex];
-   //NSLog(@"LegendeArray nach sort: %@",[LegendeArray description]);
+   //NSLog(@"LegendeArray nach sort index: %@",[[LegendeArray valueForKey:@"index"]description]);
+   NSLog(@"LegendeArray nach sort index: %@",[LegendeArray description]);
    
    //NSRect Datalegenderect = NSMakeRect(legendex, miny-2, 20, maxy-miny+8);
    //NSBezierPath* DatalegendeGraph=[NSBezierPath bezierPathWithRect:Datalegenderect];
@@ -295,14 +326,20 @@
    
    
    int legendeindex=0;
+   
    NSArray* LegendeOrdinatenArray = [LegendeArray valueForKey:@"legendeposition"];
-   //NSLog(@"LegendeOrdinatenArray: %@",[LegendeOrdinatenArray description]);
+   NSLog(@"***LegendeOrdinatenArray: %@",[LegendeOrdinatenArray description]);
    
    
    // [[[GraphArray objectAtIndex:i]objectForKey:@"zeitstring"]drawAtPoint:SchriftPunkt withAttributes:ZeitAttrs];
-   
-	for (int i=0;i<8;i++)
+
+   for (int i=0;i<12;i++)
 	{
+      if (i==0)
+      {
+         //NSLog(@"TempMKDiag. draw DatenTitelArray count: %d DatenFeldArray count: %d DatenWertArray count: %d",[DatenTitelArray count],[DatenFeldArray count],[DatenWertArray count]);
+      }
+
 		//NSLog(@"drawRect Farbe Kanal: %d Color: %@",i,[[GraphFarbeArray objectAtIndex:i] description]);
 		if ([[GraphKanalArray objectAtIndex:i]intValue])
 		{

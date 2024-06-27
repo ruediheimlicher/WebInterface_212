@@ -51,8 +51,9 @@ if ([vorgabendic objectForKey:@"randunten"])
 
 - (void)setLegendeArray:(NSArray*)legendearray
 {
+   NSLog(@"\n*******         setLegendeArray legendearray: %@",legendearray);
    
-   // Array mit Dics zu jedem Cluster: Array mit Elementen, abstaende usw
+   // Array mit Dics zu jedem Clusterteil: Array mit Elementen, abstaende usw
    NSMutableArray* ClusterArray = [[NSMutableArray alloc]initWithCapacity:0];
    
    //LegendeArray = [NSMutableArray arrayWithArray:array];
@@ -71,9 +72,9 @@ if ([vorgabendic objectForKey:@"randunten"])
       int index = [[[legendearray objectAtIndex:i]objectForKey:@"index"]intValue];
       float tempwert = [[[legendearray objectAtIndex:i]objectForKey:@"wert"]floatValue];
       
-      float legendeposition = tempwert;
+      float legendeposition = tempwert;// lage neben graphlinie
       
-      if (tempwert < minposition) // zum letzten Objekt in ClusterArray zufuegen
+      if (tempwert < minposition) // wert zu klein, gehöört noch zum letzten cluster. zum letzten Objekt in ClusterArray zufuegen
       {
          legendeposition = minposition;
          
@@ -82,7 +83,7 @@ if ([vorgabendic objectForKey:@"randunten"])
             if ([[ClusterArray lastObject]count]==0) // Array noch leer, vorher in LegendeArray eingefuegtes  Objekt einfuegen
             {
                NSMutableDictionary* prevclusterDic = [LegendeArray lastObject];
-               
+               //NSLog(@"prevclusterDic: %@",prevclusterDic);
                //NSLog(@"prevclusterDic abstandvor: %.2f",[[prevclusterDic  objectForKey:@"abstandvor"]floatValue]);
                //NSLog(@"prevclusterDic lastposition: %.2f",[[prevclusterDic  objectForKey:@"lastposition"]floatValue]);
 
@@ -98,7 +99,7 @@ if ([vorgabendic objectForKey:@"randunten"])
             
             NSMutableDictionary* clusterDic = [[NSMutableDictionary alloc]initWithObjectsAndKeys:
                                                [NSNumber numberWithFloat:legendeposition],@"legendeposition",
-                                                [NSNumber numberWithInt:clusterindex],@"clusterindex",
+                                               [NSNumber numberWithInt:clusterindex],@"clusterindex",
                                                [NSNumber numberWithInt:index],@"index",
                                                [NSNumber numberWithFloat:tempwert],@"wert",
                                                [NSNumber numberWithFloat:lastposition], @"lastposition",
@@ -131,7 +132,7 @@ if ([vorgabendic objectForKey:@"randunten"])
       [LegendeArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                [NSNumber numberWithInt:index], @"index",
                                [NSNumber numberWithFloat:tempwert], @"wert",
-                              [NSNumber numberWithFloat:legendeposition], @"legendeposition",
+                               [NSNumber numberWithFloat:legendeposition], @"legendeposition",
                                [NSNumber numberWithFloat:lastposition], @"lastposition",
                                [NSNumber numberWithFloat:distanz],@"abstandvor", // Abstand
                                
@@ -146,7 +147,7 @@ if ([vorgabendic objectForKey:@"randunten"])
    
    }// for i
    
-   //NSLog(@"DatenLegende LegendeArray: %@",[[LegendeArray valueForKey:@"legendeposition"]description]);
+   NSLog(@"DatenLegende LegendeArray: %@",[[LegendeArray valueForKey:@"legendeposition"]description]);
    
    
    // Array mit Indexes im LegendeArray. Damit lassen sich die Elemente im Clusterarray identifizieren
@@ -157,7 +158,7 @@ if ([vorgabendic objectForKey:@"randunten"])
    {
       float verschiebung =0;
       
-      //NSLog(@"DatenLegende k: %d ClusterArray vor: %@",k,[[ClusterArray objectAtIndex:k ]description]);
+      NSLog(@"DatenLegende k: %d ClusterArray vor: %@",k,[[ClusterArray objectAtIndex:k ]description]);
       
       NSMutableArray* tempClusterArray = [ClusterArray objectAtIndex:k ];
       if ([tempClusterArray count])

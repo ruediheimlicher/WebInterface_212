@@ -41,7 +41,7 @@ NSMutableArray*	lastONArray;
 NSMutableIndexSet*  AktivtastenSet;
 }
 - (void)BalkenAnlegen;
-- (void)setWochenplan:(NSArray*)derStundenArray forTag:(int)derTag;
+//- (void)setWochenplan:(NSArray*)derStundenArray forTag:(int)derTag;
 - (void)setNullpunkt:(NSPoint)derPunkt;
 - (void)setTagplan:(NSArray*)derStundenArray forTag:(int)derTag;
 - (void)stundenplanzeigen;
@@ -54,7 +54,7 @@ NSMutableIndexSet*  AktivtastenSet;
 - (void)setObjekt:(NSNumber*)dieObjektNumber;
 - (void)setRaum:(int)derRaum;
 - (void)setWochentag:(int)derWochentag;
-- (void)setTWIStatus:(int)derStatus;
+//- (void)setTWIStatus:(int)derStatus;
 - (int)wochentag;
 - (int)raum;
 - (int)objekt;

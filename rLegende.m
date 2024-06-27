@@ -76,7 +76,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 	NSMutableDictionary* AchseTextDic=[[NSMutableDictionary alloc]initWithCapacity:0];
 	[AchseTextDic setObject:AchseTextFont forKey:NSFontAttributeName];
 	NSMutableParagraphStyle* AchseStil=[[NSMutableParagraphStyle alloc]init];
-	[AchseStil setAlignment:NSRightTextAlignment];
+	[AchseStil setAlignment:NSTextAlignmentRight];
 	[AchseTextDic setObject:AchseStil forKey:NSParagraphStyleAttributeName];
 	//NSLog(@"AchseTextDic: %@",[AchseTextDic description]);
 	NSRect BalkenArrayRahmen=[self frame];//NSMakeRect(NetzEcke.x,NetzEcke.y,200,100);
